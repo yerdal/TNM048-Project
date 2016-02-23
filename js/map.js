@@ -35,24 +35,30 @@ function map() {
     
     d3.json("data/swe_mun.topojson", function(error, municipalities) {
         var munis = topojson.feature(municipalities, municipalities.objects.swe_mun).features; 
-        d3.csv("data.csv", function(error, data) {
+        d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
 			draw(munis, data);
 		});
-        draw(munis);
+       // draw(munis);
         
     });
     
-    function draw(munis) {
+    function draw(munis, data) {
 
         var municipality = g.selectAll(".municipality").data(munis);
 
-          
+        console.log(munis);
+
+        var cc = {};
+        munis.forEach(function(d) {
+			cc[d.properties.name] = colorscale(d.properties.name);
+		});
+
         municipality.enter().insert("path")
             .attr("class", "country")
             .attr("d", path)
             .attr("id", function(d) { return d.id; })
             .attr("title", function(d) { return d.properties.name; })
-            .style("fill", function(d){return colorscale(d.properties.name);})
+            .style("fill", function(d){return cc[d.properties.name];})
 
         .on("mouseover", function(d){
                 return tooltip.style("visibility", "visible");
