@@ -1,5 +1,5 @@
 function map() {
-    
+    data = {};
     var zoom = d3.behavior.zoom()
         .scaleExtent([1, 8])
         .on("zoom", move);
@@ -14,6 +14,7 @@ function map() {
         .text("a simple tooltip");
     
     var mapDiv = $("#map");
+    var municipality;
 
     var margin = {top: 20, right: 20, bottom: 20, left: 20},
         width = mapDiv.width() - margin.right - margin.left,
@@ -43,11 +44,9 @@ function map() {
     });
     
     function draw(munis, data) {
-
-        var municipality = g.selectAll(".municipality").data(munis);
-
-        console.log(munis);
-
+        municipality = g.selectAll(".municipality").data(munis);
+        
+        //Currently not working
         var cc = {};
         munis.forEach(function(d) {
 			cc[d.properties.name] = colorscale(d.properties.name);
@@ -62,19 +61,29 @@ function map() {
 
         .on("mouseover", function(d){
                 return tooltip.style("visibility", "visible");
-                console.log(d);
         })
         .on("mousemove", function(d) {
-                return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px").text(d.properties.name);
-                console.log(d);
+                return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px").style("color", "red").text(d.properties.name);
         })
         .on("mouseout",  function(d) {
                 return tooltip.style("visibility", "hidden");
-                console.log(d);
         })
+        .on("click", function(d) {
+          selectMunicipality(d.properties.name); 
+        });
+
 
     }
-    
+   
+    function selectMunicipality(value) {
+        municipality.style("fill", function(d){
+				if (value == d.properties.name){
+                    return "orange";
+                }
+                else {
+                    return "black";
+                };
+    })};
      //zoom and panning method, this is code from the labs.
     function move() {
         var t = d3.event.translate;
