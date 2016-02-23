@@ -9,7 +9,7 @@ function plot(){
   var data2002 = [];
 
   var xValues = [2002, 2006, 2010, 2014];
-
+  var yValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   var self = this;
 
 
@@ -36,6 +36,20 @@ function plot(){
       .scale(y)
       .orient("left");
 
+  var color = d3.scale.category20();
+
+  var line = d3.svg.line()
+      .x(function(d,i){
+        console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
+				// return the X coordinate where we want to plot this datapoint
+				return x(i);
+      })
+      .y(function(d){
+        // verbose logging to show what's actually being done
+				console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
+				// return the Y coordinate where we want to plot this datapoint
+				return y(d);
+      })
 
   var svg = d3.select("#plotchart").append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -83,10 +97,8 @@ function plot(){
 
       })
       //define the domain of the scatter plot axes
-      x.domain(d3.extent(xValues, function(d){return d}));
-      y.domain([0, d3.max(data2002,function(d){
-       //console.log("TEST", d["Year=2002"]);
-       return d["Year=2002"];})]);
+      x.domain(d3.extent(xValues, function(d){return d;}));
+      y.domain([0, d3.max(yValues,function(d){return d;})]);
       draw();
 
   });
@@ -98,6 +110,11 @@ function plot(){
     console.log("data2006", data2006.length);
     console.log("data2002", data2002.length);*/
 
+/*    var graph = d3.select("#graph").append("svg:svg")
+			      .attr("width", w + m[1] + m[3])
+			      .attr("height", h + m[0] + m[2])
+			    .append("svg:g")
+			      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");*/
 
     // Add x axis and title.
     svg.append("g")
@@ -123,7 +140,6 @@ function plot(){
         .attr("dy", ".71em")
       .data(self.data)
       .text("Election result (%)");
-
 
   }
 

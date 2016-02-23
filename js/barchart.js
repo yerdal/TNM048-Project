@@ -11,12 +11,12 @@ function barchart(data)
 	for (var i = 0; i < data.length; i++)
 	{
 		if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar")
-	
+
     {
 			filteredData.push(data[i]);
 		}
 	}
-	
+
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
@@ -40,14 +40,14 @@ function barchart(data)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");    
-    
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 
     d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
         draw(data);
     });
 	function draw(data) {
-        console.log(data);
+        //console.log(data);
     x.domain(data.map(function(d) { return d.party; }));
     y.domain([0, d3.max(data, function(d) { return d.votes; })]);
 
@@ -77,8 +77,8 @@ function barchart(data)
 
     }
 
- 
-	    
+
+
 
 
 // because ÅÄÖ is fucked.
@@ -160,7 +160,3 @@ function filterParties(data)
 
 
 //}
-
-
-
-
