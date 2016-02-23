@@ -1,0 +1,2 @@
+
+var bc = new barchart();
