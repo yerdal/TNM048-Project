@@ -8,26 +8,27 @@ function plot(){
 
   var data2002 = [];
 
+  var xValues = [2002, 2006, 2010, 2014];
+
   var self = this;
 
 
-  var plotDiv = $("#barchart");
+  var plotDiv = $("#plotchart");
 
   var margin = {top: 20, right: 20, bottom: 20, left: 40},
       width = plotDiv.width() - margin.right - margin.left,
       height = plotDiv.height() - margin.top - margin.bottom;
-
-
-  //console.log("HEJ", plotDiv);
-
+      //console.log("plotheight", plotDiv.height());
   var x = d3.scale.linear()
       .range([0, width]);
+
 
   var y = d3.scale.linear()
       .range([height, 0]);
 
   var xAxis = d3.svg.axis()
       .scale(x)
+      .tickValues(xValues)
       .orient("bottom");
 
 
@@ -36,7 +37,7 @@ function plot(){
       .orient("left");
 
 
-  var svg = d3.select("#barchart").append("svg")
+  var svg = d3.select("#plotchart").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
@@ -47,7 +48,7 @@ function plot(){
   d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
       self.data = data;
       data.forEach(function(d){
-        //console.log( "HEJ", d);
+
         data2014.push(d);
 
       })
@@ -57,7 +58,7 @@ function plot(){
   d3.csv("data/Swedish_Election_2010.csv", function(error, data) {
       self.data = data;
       data.forEach(function(d){
-        //console.log( "HEJ", d);
+
         data2010.push(d);
 
       })
@@ -81,25 +82,23 @@ function plot(){
         data2002.push(d);
 
       })
-      draw();
-      //draw(data2014)
       //define the domain of the scatter plot axes
-      //x.domain([0, d3.max(data, function(d) { return d["region"]; })]);
-      //y.domain([0, d3.max(data, function(d) {
-      //console.log(d["region"], d["party"], d["Year=2014"]);
-    //return d["Year=2014"]; })]);
+      x.domain(d3.extent(xValues, function(d){return d}));
+      y.domain([0, d3.max(data2002,function(d){
+       //console.log("TEST", d["Year=2002"]);
+       return d["Year=2002"];})]);
+      draw();
 
-  //  draw();
   });
 
 
-
-
   function draw(){
-    console.log("data2014", data2014[0]["Year=2014"]);
-    console.log("data2010", data2010[0]["Year=2010"]);
-    console.log("data2006", data2006[0]["Year=2006"]);
-    console.log("data2002", data2002[0]["Year=2002"]);
+/*    console.log("data2014", data2014.length);
+    console.log("data2010", data2010.length);
+    console.log("data2006", data2006.length);
+    console.log("data2002", data2002.length);*/
+
+
     // Add x axis and title.
     svg.append("g")
         .attr("class", "x axis")
@@ -110,9 +109,7 @@ function plot(){
         .attr("x", width-50)
         .attr("y", -6)
       .data(self.data)
-        /*.text( function(d) {
-            return d["Year"];
-        })*/
+      .text("Election Year");
 
     // Add y axis and title.
     svg.append("g")
@@ -124,10 +121,8 @@ function plot(){
         .attr("y", 8)
         .attr("x", -100)
         .attr("dy", ".71em")
-        .data(self.data)
-      /*text( function(d) {
-            return d["Year"];
-        })*/
+      .data(self.data)
+      .text("Election result (%)");
 
 
   }
