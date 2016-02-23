@@ -15,3 +15,8 @@ html, body {
     /* Pad bottom by footer height */
     padding: 0 0 60px;
 }
+
+.container {
+    margin: 0;
+    padding: 0;
+}

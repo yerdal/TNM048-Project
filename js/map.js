@@ -4,16 +4,24 @@ function map() {
         .scaleExtent([1, 8])
         .on("zoom", move);
 
-    var colorscale = d3.scale.category20();    
+    var colorscale = d3.scale.category20();  
+    
+    var tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden")
+        .text("a simple tooltip");
     
     var mapDiv = $("#map");
 
     var margin = {top: 20, right: 20, bottom: 20, left: 20},
         width = mapDiv.width() - margin.right - margin.left,
         height = mapDiv.height() - margin.top - margin.bottom;
+   
    var projection = d3.geo.mercator()
-        .center([50, 60 ])
-        .scale(250);
+        .center([20, 66 ])
+        .scale(1500);
         
    var svg = d3.select("#map").append("svg")
         .attr("width", width)
@@ -26,7 +34,6 @@ function map() {
     g = svg.append("g");
     
     d3.json("data/swe_mun.topojson", function(error, municipalities) {
-        console.log(municipalities);
         var munis = topojson.feature(municipalities, municipalities.objects.swe_mun).features; 
 
         draw(munis);
@@ -34,6 +41,7 @@ function map() {
     });
     
     function draw(munis) {
+
         var municipality = g.selectAll(".municipality").data(munis);
    
         municipality.enter().insert("path")
@@ -42,6 +50,19 @@ function map() {
             .attr("id", function(d) { return d.id; })
             .attr("title", function(d) { return d.properties.name; })
             .style("fill", function(d){return colorscale(d.properties.name);})
+
+        .on("mouseover", function(d){
+                return tooltip.style("visibility", "visible");
+                console.log(d);
+        })
+        .on("mousemove", function(d) {
+                return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px").text(d.properties.name);
+                console.log(d);
+        })
+        .on("mouseout",  function(d) {
+                return tooltip.style("visibility", "hidden");
+                console.log(d);
+        })
 
     }
     
