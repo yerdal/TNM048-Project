@@ -35,7 +35,9 @@ function map() {
     
     d3.json("data/swe_mun.topojson", function(error, municipalities) {
         var munis = topojson.feature(municipalities, municipalities.objects.swe_mun).features; 
-
+        d3.csv("data.csv", function(error, data) {
+			draw(munis, data);
+		});
         draw(munis);
         
     });
@@ -43,7 +45,8 @@ function map() {
     function draw(munis) {
 
         var municipality = g.selectAll(".municipality").data(munis);
-   
+
+          
         municipality.enter().insert("path")
             .attr("class", "country")
             .attr("d", path)
