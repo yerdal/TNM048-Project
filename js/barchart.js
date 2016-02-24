@@ -1,6 +1,5 @@
 function barchart(data)
 {
-	console.log(data);
 	var barchartDiv = $("#barchart");
 	var results;
 	var str = "..";
@@ -9,11 +8,9 @@ function barchart(data)
 	var keys = d3.keys(data[0]);
 
 	var filteredData = [];
-	filteredData = filterData(data);
-	var currentMunicipality;
-
+	filterData(data);
 	var nationalResults = [];
-	nationalResults = calcNationalResults(filteredData);
+	calcNationalResults(filteredData);
 
   	var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 900 - margin.left - margin.right,
@@ -41,10 +38,13 @@ function barchart(data)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     draw(nationalResults);
-    console.log(currentMunicipality);
+    var currentData = [];
 
 	function draw(data)
 	{
+		svg.selectAll(".bar").remove();
+		svg.selectAll(".axis").remove();	
+		svg.selectAll("g").remove();
 	    x.domain(data.map(function(d) { return getPartyAbbreviation(d.party); }));
 	    //y.domain([0, 1]);
 	    y.domain([0, 100 ] );
@@ -75,12 +75,9 @@ function barchart(data)
 
     }
 
-    function calcNationalResults(filteredData)
+    function calcNationalResults()
     {
     	var NUM_PARTIES = 9;
-    	var nationalResults = [];
-
-    	var parties = [];
     	var count = 0;
     	var vote = 0;
     	for (var i = 0; i < NUM_PARTIES; i++)
@@ -106,9 +103,6 @@ function barchart(data)
     		nationalResults[i].votes/=count;
     		nationalResults[i].votes = (nationalResults[i].votes).toFixed(1);
     	}
-
-    	/*filteredData.push(nationalResults);*/
-    	return nationalResults;
     }
 
     function getPartyAbbreviation(party)
@@ -132,9 +126,8 @@ function barchart(data)
     	else if (party == "övriga partier")
     		return "Ö";
     }
-    function filterData(data)
+    function filterData()
     {
-    	var filteredData = [];
     	for (var i = 0; i < data.length; i++)
     	{
     		if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar"
@@ -143,16 +136,28 @@ function barchart(data)
     			filteredData.push(data[i]);
     		}
     	}
-    	return filteredData;
-
     }
     this.setCurrentMunicipality = function(value)
     {
-    	setMunicipality(value);
+    	if (value!= "")
+    	{
+	    	currentMunicipality = value;
+	    	filterByMunicipality();
+	    }
     }
-    function setMunicipality(value)
+
+    function filterByMunicipality()
     {
-    	currentMunicipality = value;
+    	var municipalityData = [];
+    	for (var i = 0; i < filteredData.length; i++)
+    	{
+    		if (filteredData[i].region.indexOf(currentMunicipality) != -1)
+    		{
+    			municipalityData.push(filteredData[i]);
+    		}	
+    	}
+    	draw(municipalityData);
+    		    	
     }
 }
 

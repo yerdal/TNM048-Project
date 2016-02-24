@@ -2,7 +2,7 @@ var plot1;
 var map1;
 var bc;
 
-d3.csv("data/Swedish_Election_2002.csv", function (data)
+d3.csv("data/Swedish_Election_2014.csv", function (data)
 {
 
 
