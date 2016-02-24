@@ -142,6 +142,8 @@ function barchart(data)
     	if (value!= "")
     	{
 	    	currentMunicipality = value;
+             $(".barChartText").html(currentMunicipality);	
+
 	    	filterByMunicipality();
 	    }
     }
@@ -156,7 +158,7 @@ function barchart(data)
     			municipalityData.push(filteredData[i]);
     		}	
     	}
-    	draw(municipalityData);
+        draw(municipalityData);
     		    	
     }
 }

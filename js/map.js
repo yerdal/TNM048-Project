@@ -77,10 +77,10 @@ function map() {
     
    
     function selectMunicipality(value) {
-        bc.setCurrentMunicipality(value);
         if(value !== "") {
             municipality.style("fill", function(d){
                     if (value == d.properties.name){
+                         bc.setCurrentMunicipality(value);
                         return "purple";
                     }
                     else {
