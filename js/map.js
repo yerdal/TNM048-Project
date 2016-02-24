@@ -16,12 +16,12 @@ function map() {
     var mapDiv = $("#map");
     var municipality;
 
-    var margin = {top: 20, right: 20, bottom: 20, left: 20},
+    var margin = {top: 20, right: 20, bottom: 20, left: 5},
         width = mapDiv.width() - margin.right - margin.left,
         height = mapDiv.height() - margin.top - margin.bottom;
    
    var projection = d3.geo.mercator()
-        .center([20, 66 ])
+        .center([19, 66 ])
         .scale(1500);
         
    var svg = d3.select("#map").append("svg")
@@ -76,7 +76,7 @@ function map() {
     }
    
     function selectMunicipality(value) {
-        if(value !== null) {
+       if(value !== "") {
             municipality.style("fill", function(d){
                     if (value == d.properties.name){
                         return "purple";
@@ -85,11 +85,6 @@ function map() {
                         return "lightblue";
                     };
             })
-        }
-        else {
-             municipality.style("fill", function(d){
-                    return cc[d.properties.name];
-                 });
         }
     };
      //zoom and panning method, this is code from the labs.
