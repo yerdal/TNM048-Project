@@ -81,6 +81,7 @@ function plot() {
       //votes2014.push(d.votes);
     })
 
+
   });
 
   //load data for 2010
@@ -128,6 +129,7 @@ function plot() {
     /*console.log("data2014", data2014[0]);
     console.log("data2010", data2010[0]);
     console.log("data2006", data2006[0]);
+
     console.log("data2002", data2002[0]);
     console.log("Votes2014", votes2014[0]);
     console.log("Votes2010", votes2010[0]);

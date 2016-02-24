@@ -5,25 +5,16 @@ function barchart(data)
 	var results;
 	var str = "..";
 
+	var colormap = d3.scale.category20();
+
 	var keys = d3.keys(data[0]);
 
 	var filteredData = [];
-	for (var i = 0; i < data.length; i++)
-	{
-		if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar"
-			&& (data[i].region != "1229 Bara"))
-    	{
-			filteredData.push(data[i]);
-		}
-	}
-	var arr = [];
+	filteredData = filterData(data);
 
-	for (var i = 0; i < 7; i++)
-	{
-		arr.push(filteredData[i]);
-	}
 
-	filteredData = calcNationalResults(filteredData);
+	var nationalResults = [];
+	nationalResults = calcNationalResults(filteredData);
 
   	var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 900 - margin.left - margin.right,
@@ -43,23 +34,22 @@ function barchart(data)
     var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left")
-    .ticks(10, "%");
+    .tickValues([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], "%");
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#barchart").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-    draw(arr);
+    draw(nationalResults);
 
 	function draw(data)
 	{
-
-	    x.domain(data.map(function(d) { return d.party; }));
-	    y.domain([0, 1]);
-
+	    x.domain(data.map(function(d) { return getPartyAbbreviation(d.party); }));
+	    //y.domain([0, 1]);
+	    y.domain([0, 100 ] );
 	    svg.append("g")
 	      .attr("class", "x axis")
 	      .attr("transform", "translate(0," + height + ")")
@@ -70,7 +60,7 @@ function barchart(data)
 	      .call(yAxis)
 	      .append("text")
 	      .attr("transform", "rotate(-90)")
-	      .attr("y", 6)
+	      .attr("y", 5)
 	      .attr("dy", ".71em")
 	      .style("text-anchor", "end")
 
@@ -80,8 +70,10 @@ function barchart(data)
 	      .attr("class", "bar")
 	      .attr("x", function(d) {  return x(d.party); })
 	      .attr("width", x.rangeBand())
-	      .attr("y", function(d) {  return (d.votes); })
-	      .attr("height", function(d) { return height - (d.votes); });
+	      .attr("y", function(d) {  return y(d.votes); })
+	      .style("fill", function(d){ return colormap(d.party)})
+	      .attr("height", function(d) { return height - y(d.votes); });
+
 
     }
 
@@ -89,6 +81,7 @@ function barchart(data)
     {
     	var NUM_PARTIES = 9;
     	var nationalResults = [];
+
     	var parties = [];
     	var count = 0;
     	var vote = 0;
@@ -115,9 +108,45 @@ function barchart(data)
     		nationalResults[i].votes/=count;
     		nationalResults[i].votes = (nationalResults[i].votes).toFixed(1);
     	}
-    	//filteredData.push(nationalResults);
-			console.log("natres", nationalResults[4]);
+
+    	/*filteredData.push(nationalResults);*/
     	return nationalResults;
+    }
+
+    function getPartyAbbreviation(party)
+    {
+    	if (party == "Moderaterna")
+    		return "M";
+    	else if (party == "Socialdemokraterna")
+    		return "S";
+    	else if (party == "Miljöpartiet")
+    		return "MP";
+    	else if (party == "Sverigedemokraterna")
+    		return "SD";
+    	else if (party == "Kristdemokraterna")
+    		return "KD";
+    	else if (party == "Vänsterpartiet")
+    		return "V";
+    	else if (party == "Centerpartiet")
+    		return "C";
+    	else if (party == "Folkpartiet")
+    		return "FP";
+    	else if (party == "övriga partier")
+    		return "Ö";
+    }
+    function filterData(data)
+    {
+    	var filteredData = [];
+    	for (var i = 0; i < data.length; i++)
+    	{
+    		if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar"
+    			&& (data[i].region != "1229 Bara"))
+    		{
+    			filteredData.push(data[i]);
+    		}
+    	}
+    	return filteredData;
+
     }
 
 }
