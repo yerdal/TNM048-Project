@@ -8,14 +8,8 @@ function barchart(data)
 	var keys = d3.keys(data[0]);
 
 	var filteredData = [];
-	for (var i = 0; i < data.length; i++)
-	{
-		if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar"
-			&& (data[i].region != "1229 Bara"))
-    	{
-			filteredData.push(data[i]);
-		}
-	}
+	filteredData = filterData(data);
+	console.log(filteredData);
 	var nationalResults = [];
 	nationalResults = calcNationalResults(filteredData);
 	
@@ -134,7 +128,20 @@ function barchart(data)
     		return "FP";
     	else if (party == "övriga partier")
     		return "Ö";
-    }	
+    }
+    function filterData(data)
+    {
+    	var filteredData = [];
+    	for (var i = 0; i < data.length; i++)
+    	{
+    		if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar"
+    			&& (data[i].region != "1229 Bara"))
+    		{
+    			filteredData.push(data[i]);
+    		}
+    	}
+    	return filteredData;
+    }
     	
 }
 
