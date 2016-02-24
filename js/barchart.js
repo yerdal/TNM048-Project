@@ -6,7 +6,6 @@ function barchart(data)
 	var str = "..";
 
 	var keys = d3.keys(data[0]);
-	//console.log(keys);
 
 	var filteredData = [];
 	for (var i = 0; i < data.length; i++)
@@ -25,10 +24,10 @@ function barchart(data)
 	}
 
 	filteredData = calcNationalResults(filteredData);
-	console.log(filteredData);
 	
   	var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 900 - margin.left - margin.right,
+
     height = 500 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
@@ -105,7 +104,6 @@ function barchart(data)
     			if (nationalResults[k].party == filteredData[i].party)
     			{
     				nationalResults[k].votes+=parseFloat(filteredData[i].votes);
-    				//console.log(nationalResults[k].votes);
     				break;
     			}
 
@@ -116,20 +114,15 @@ function barchart(data)
     	{
     		nationalResults[i].votes/=count;
     		nationalResults[i].votes = (nationalResults[i].votes).toFixed(1);
-    		console.log()
     	}
     	filteredData.push(nationalResults);
     	return filteredData;
-
     }
     	
 }
 
  
 	    
-
-
-
 
 
 
