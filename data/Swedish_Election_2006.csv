@@ -1,15 +1,15 @@
-"region","party","Year=2006"
-"0114 Upplands Väsby","Moderaterna",34.5
-"0114 Upplands Väsby","Centerpartiet",4.0
-"0114 Upplands Väsby","Folkpartiet",9.0
-"0114 Upplands Väsby","Kristdemokraterna",6.3
-"0114 Upplands Väsby","Miljöpartiet",5.2
-"0114 Upplands Väsby","Socialdemokraterna",30.6
-"0114 Upplands Väsby","Vänsterpartiet",5.8
-"0114 Upplands Väsby","Sverigedemokraterna",2.5
-"0114 Upplands Väsby","övriga partier",2.1
-"0114 Upplands Väsby","ogiltiga valsedlar",..
-"0114 Upplands Väsby","ej röstande",..
+"region","party","votes"
+"0114 Upplands Vï¿½sby","Moderaterna",34.5
+"0114 Upplands Vï¿½sby","Centerpartiet",4.0
+"0114 Upplands Vï¿½sby","Folkpartiet",9.0
+"0114 Upplands Vï¿½sby","Kristdemokraterna",6.3
+"0114 Upplands Vï¿½sby","Miljï¿½partiet",5.2
+"0114 Upplands Vï¿½sby","Socialdemokraterna",30.6
+"0114 Upplands Vï¿½sby","Vï¿½nsterpartiet",5.8
+"0114 Upplands Vï¿½sby","Sverigedemokraterna",2.5
+"0114 Upplands Vï¿½sby","ï¿½vriga partier",2.1
+"0114 Upplands Vï¿½sby","ogiltiga valsedlar",..
+"0114 Upplands Vï¿½sby","ej rï¿½stande",..
 "0115 Vallentuna","Moderaterna",42.1
 "0115 Vallentuna","Centerpartiet",7.5
 "0115 Vallentuna","Folkpartiet",8.8
@@ -3200,7 +3200,7 @@
 "2584 Kiruna","ï¿½vriga partier",7.2
 "2584 Kiruna","ogiltiga valsedlar",..
 <<<<<<< HEAD
-"2584 Kiruna","ej röstande",..
+"2584 Kiruna","ej rï¿½stande",..
 =======
 "2584 Kiruna","ej rï¿½stande",..
 >>>>>>> 32ff122d7e34281ade12d125ed9c10a6495656ca

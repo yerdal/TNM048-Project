@@ -62,10 +62,13 @@ function plot(){
   d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
       self.data = data;
       data.forEach(function(d){
-
         data2014.push(d);
-
       })
+
+          var maxY = d3.max(data, function(d){
+              console.log("test", d["votes"]);
+              return d["Year=2014"];
+          })
   });
 
   //load data for 2010
@@ -96,19 +99,19 @@ function plot(){
         data2002.push(d);
 
       })
+
       //define the domain of the scatter plot axes
       x.domain(d3.extent(xValues, function(d){return d;}));
       y.domain([0, d3.max(yValues,function(d){return d;})]);
       draw();
-
   });
 
 
   function draw(){
-/*    console.log("data2014", data2014.length);
-    console.log("data2010", data2010.length);
-    console.log("data2006", data2006.length);
-    console.log("data2002", data2002.length);*/
+    console.log("data2014", data2014[0]);
+    console.log("data2010", data2010[0]);
+    console.log("data2006", data2006[0]);
+    console.log("data2002", data2002[0]);
 
 /*    var graph = d3.select("#graph").append("svg:svg")
 			      .attr("width", w + m[1] + m[3])
