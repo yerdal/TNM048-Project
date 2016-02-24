@@ -6,19 +6,28 @@ function barchart(data)
 	var str = "..";
 
 	var keys = d3.keys(data[0]);
-	//console.log(keys);
+
 	var filteredData = [];
 	for (var i = 0; i < data.length; i++)
 	{
-		if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar")
-
-    {
+		if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar"
+			&& (data[i].region != "1229 Bara"))
+    	{
 			filteredData.push(data[i]);
 		}
 	}
+	var arr = [];
 
-  var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
+	for (var i = 0; i < 7; i++)
+	{
+		arr.push(filteredData[i]);
+	}
+
+	filteredData = calcNationalResults(filteredData);
+	
+  	var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 900 - margin.left - margin.right,
+
     height = 500 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
@@ -40,123 +49,83 @@ function barchart(data)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");    
 
 
-    d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
-        draw(data);
-    });
-	function draw(data) {
-        //console.log(data);
-    x.domain(data.map(function(d) { return d.party; }));
-    y.domain([0, d3.max(data, function(d) { return d.votes; })]);
+    draw(arr);
 
-    svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+	function draw(data) 
+	{
 
-    svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Frequency");
+	    x.domain(data.map(function(d) { return d.party; }));
+	    y.domain([0, 1]);
 
-    svg.selectAll(".bar")
-      .data(data)
-      .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.party); })
-      .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.votes); })
-      .attr("height", function(d) { return height - y(d.votes); });
+	    svg.append("g")
+	      .attr("class", "x axis")
+	      .attr("transform", "translate(0," + height + ")")
+	      .call(xAxis);
+
+	    svg.append("g")
+	      .attr("class", "y axis")
+	      .call(yAxis)
+	      .append("text")
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", ".71em")
+	      .style("text-anchor", "end")
+
+	    svg.selectAll(".bar")
+	      .data(data)
+	      .enter().append("rect")
+	      .attr("class", "bar")
+	      .attr("x", function(d) {  return x(d.party); })
+	      .attr("width", x.rangeBand())
+	      .attr("y", function(d) {  return (d.votes); })
+	      .attr("height", function(d) { return height - (d.votes); });
 
     }
 
+    function calcNationalResults(filteredData)
+    {
+    	var NUM_PARTIES = 9;
+    	var nationalResults = [];
+    	var parties = [];
+    	var count = 0;
+    	var vote = 0;
+    	for (var i = 0; i < NUM_PARTIES; i++)
+    	{
+    		nationalResults.push({"party":filteredData[i].party, "region":"Sweden", "votes": 0})
+    	}
+
+    	for (var i = 0; i < filteredData.length; i++)
+    	{
+    		for (var k = 0; k < NUM_PARTIES; k++)
+    		{
+    			if (nationalResults[k].party == filteredData[i].party)
+    			{
+    				nationalResults[k].votes+=parseFloat(filteredData[i].votes);
+    				break;
+    			}
+
+    		}
+    		count+=1/9;
+    	}
+    	for (var i = 0; i < nationalResults.length; i++)
+    	{
+    		nationalResults[i].votes/=count;
+    		nationalResults[i].votes = (nationalResults[i].votes).toFixed(1);
+    	}
+    	filteredData.push(nationalResults);
+    	return filteredData;
+    }
+    	
+}
+
+ 
+	    
 
 
 
 
-// because ÅÄÖ is fucked.
-function filterParties(data)
-{
-	/*var parties = {"M":0.0, "C":0.0, "FP":0.0, "KD":0.0,
-    				"MP":0.0, "S":0.0, "V":0.0, "SD":0.0,
-    				"O":0.0};*/
-    var parties = [];
-
-    parties.push({"M":0.0});
-    parties.push({"C":0.0});
-    parties.push({"FP":0.0});
-    parties.push({"KD":0.0});
-    parties.push({"MP":0.0});
-    parties.push({"S":0.0});
-    parties.push({"V":0.0});
-    parties.push({"SD":0.0});
-    parties.push({"O":0.0});
-
-	var count = 0;
-	for (var i = 0; i < data.length; i++)
-	{
-		if (data[i].votes != "..")
-		{
-			if (data[i].party.startsWith("V"))
-			{
-				parties["V"] += parseFloat(data[i].votes);
-				count++;
-			}
-			else if (data[i].party.startsWith("Mi"))
-			{
-				parties["MP"] += parseFloat(data[i].votes);
-			}
-			else if (data[i].party.startsWith("ö")) // övriga partier
-			{
-				parties["O"] += parseFloat(data[i].votes);
-			}
-			else if (data[i].party.startsWith("Sv"))
-			{
-				parties["SD"] += parseFloat(data[i].votes);
-			}
-			else if (data[i].party.startsWith("So"))
-			{
-				parties["S"] += parseFloat(data[i].votes);
-			}
-			else if (data[i].party.startsWith("Mo"))
-			{
-				parties["M"] += parseFloat(data[i].votes);
-			}
-			else if (data[i].party.startsWith("Kr"))
-			{
-				parties["KD"] += parseFloat(data[i].votes);
-			}
-			else if (data[i].party.startsWith("Ce"))
-			{
-				parties["C"] += parseFloat(data[i].votes);
-			}
-			else if (data[i].party.startsWith("Fo"))
-			{
-				parties["FP"] += parseFloat(data[i].votes);
-			}
-		}
-	}
-	var keys = d3.keys(parties);
-	for (var i = 0; i < keys.length; i++)
-	{
-		parties[keys[i]]/=count;
-	}
-
-	return parties;
-}};
-
-/*function type(d) {
-  d.value = +d.value; // coerce to number
-  return d;
-}*/
 
 
-
-//}
