@@ -24,7 +24,7 @@ function barchart(data)
 	}
 
 	filteredData = calcNationalResults(filteredData);
-	
+
   	var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 900 - margin.left - margin.right,
 
@@ -49,12 +49,12 @@ function barchart(data)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");    
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
     draw(arr);
 
-	function draw(data) 
+	function draw(data)
 	{
 
 	    x.domain(data.map(function(d) { return d.party; }));
@@ -115,17 +115,9 @@ function barchart(data)
     		nationalResults[i].votes/=count;
     		nationalResults[i].votes = (nationalResults[i].votes).toFixed(1);
     	}
-    	filteredData.push(nationalResults);
-    	return filteredData;
+    	//filteredData.push(nationalResults);
+			console.log("natres", nationalResults[4]);
+    	return nationalResults;
     }
-    	
+
 }
-
- 
-	    
-
-
-
-
-
-
