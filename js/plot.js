@@ -66,7 +66,7 @@ function plot(){
       })
 
           var maxY = d3.max(data, function(d){
-              console.log("test", d["votes"]);
+              //console.log("test", d["votes"]);
               return d["Year=2014"];
           })
   });
@@ -108,10 +108,10 @@ function plot(){
 
 
   function draw(){
-    console.log("data2014", data2014[0]);
+    /*console.log("data2014", data2014[0]);
     console.log("data2010", data2010[0]);
     console.log("data2006", data2006[0]);
-    console.log("data2002", data2002[0]);
+    console.log("data2002", data2002[0]);*/
 
 /*    var graph = d3.select("#graph").append("svg:svg")
 			      .attr("width", w + m[1] + m[3])
