@@ -48,13 +48,13 @@ function plot() {
 
   var line = d3.svg.line()
     .x(function(d, i) {
-      console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
+      //console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
       // return the X coordinate where we want to plot this datapoint
       return x(i);
     })
     .y(function(d) {
       // verbose logging to show what's actually being done
-      console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
+      //console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
       // return the Y coordinate where we want to plot this datapoint
       return y(d);
     })
@@ -136,7 +136,7 @@ function plot() {
     console.log("Votes2006", votes2006[0]);
     console.log("Votes2002", votes2002[0]);*/
     //electionForParty(data2014);
-    console.log(data2006);
+    //console.log(data2006);
 
     var votes2014 = calcNationalResults(data2014);
     var votes2010 = calcNationalResults(data2010);
@@ -215,7 +215,7 @@ function plot() {
         result.push(d);
       }
     })
-    console.log(result);
+    //console.log(result);
     return result;
   }
 

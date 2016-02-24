@@ -1,17 +1,16 @@
 function barchart(data)
 {
-
+	console.log(data);
 	var barchartDiv = $("#barchart");
 	var results;
 	var str = "..";
-
 	var colormap = d3.scale.category20();
-
+	var currentMunicipality = "Sweden"; // national data by default
 	var keys = d3.keys(data[0]);
 
 	var filteredData = [];
 	filteredData = filterData(data);
-
+	var currentMunicipality;
 
 	var nationalResults = [];
 	nationalResults = calcNationalResults(filteredData);
@@ -41,9 +40,8 @@ function barchart(data)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
     draw(nationalResults);
+    console.log(currentMunicipality);
 
 	function draw(data)
 	{
@@ -148,5 +146,13 @@ function barchart(data)
     	return filteredData;
 
     }
-
+    this.setCurrentMunicipality = function(value)
+    {
+    	setMunicipality(value);
+    }
+    function setMunicipality(value)
+    {
+    	currentMunicipality = value;
+    }
 }
+
