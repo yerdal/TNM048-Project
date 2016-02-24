@@ -5,8 +5,6 @@ function map() {
         .scaleExtent([1, 8])
         .on("zoom", move);
 
-    var colorscale = d3.scale.category20();  
-    
     var tooltip = d3.select("body")
         .append("div")
         .style("position", "absolute")
@@ -20,11 +18,14 @@ function map() {
         width = mapDiv.width() - margin.right - margin.left,
         height = mapDiv.height() - margin.top - margin.bottom;
    
-   var projection = d3.geo.mercator()
-        .center([19, 66 ])
-        .scale(1500);
-        
-   var svg = d3.select("#map").append("svg")
+    var projection = d3.geo.albers()
+	    .center([5, 70])
+	    .rotate([-10, 0])
+	    .parallels([30, 60])
+	    .scale(700 * 5)
+	    .translate([width / 2, 0]);
+          
+    var svg = d3.select("#map").append("svg")
         .attr("width", width)
         .attr("height", height)
         .call(zoom);
@@ -48,11 +49,7 @@ function map() {
     function draw(munis, data) {
         municipality = g.selectAll(".municipality").data(munis);
         
-        //Currently not working
-        var cc = {};
-        munis.forEach(function(d) {
-			cc[d.properties.name] = colorscale(d.properties.name);
-		});
+    
 
         municipality.enter().insert("path")
             .attr("class", "country")
@@ -69,13 +66,14 @@ function map() {
                 return tooltip.style("visibility", "hidden");
         })
         .on("click", function(d) {
-          selectMunicipality(d.properties.name); 
+          selectMunicipality(d.properties.name);
         });
 
 
     }
    
     function selectMunicipality(value) {
+
        if(value !== "") {
             municipality.style("fill", function(d){
                     if (value == d.properties.name){
@@ -102,7 +100,7 @@ function map() {
        $( "#searchRegion" ).autocomplete({
       source: availableTags
     });
-}; 
+  }; 
 
     $( "input" ).keyup(function() {
         var value = $( this ).val();
