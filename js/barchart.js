@@ -5,11 +5,13 @@ function barchart(data)
 	var results;
 	var str = "..";
 
+	var colormap = d3.scale.category20();
+
 	var keys = d3.keys(data[0]);
 
 	var filteredData = [];
 	filteredData = filterData(data);
-	console.log(filteredData);
+
 	var nationalResults = [];
 	nationalResults = calcNationalResults(filteredData);
 	
@@ -68,7 +70,9 @@ function barchart(data)
 	      .attr("x", function(d) {  return x(d.party); })
 	      .attr("width", x.rangeBand())
 	      .attr("y", function(d) {  return y(d.votes); })
+	      .style("fill", function(d){ return colormap(d.party)})
 	      .attr("height", function(d) { return height - y(d.votes); });
+
 
     }
 
