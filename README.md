@@ -7,5 +7,5 @@ Project in the course Information visualization.
  - [] Load data, start with 2014
  - [] Load data for several years
  - [] Different coloring
- - [] Search field
+ - [x] Search field
 
