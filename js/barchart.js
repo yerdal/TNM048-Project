@@ -1,20 +1,20 @@
 function barchart(data)
 {
-
+	console.log(data);
 	var barchartDiv = $("#barchart");
 	var results;
 	var str = "..";
-
 	var colormap = d3.scale.category20();
-
+	var currentMunicipality = "Sweden"; // national data by default
 	var keys = d3.keys(data[0]);
 
 	var filteredData = [];
 	filteredData = filterData(data);
+	var currentMunicipality;
 
 	var nationalResults = [];
 	nationalResults = calcNationalResults(filteredData);
-	
+
   	var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 900 - margin.left - margin.right,
 
@@ -25,7 +25,7 @@ function barchart(data)
 
     var y = d3.scale.linear()
     .range([height, 0]);
-
+    // 
     var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom");
@@ -39,16 +39,15 @@ function barchart(data)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");    
-
-
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     draw(nationalResults);
+    console.log(currentMunicipality);
 
-	function draw(data) 
+	function draw(data)
 	{
 	    x.domain(data.map(function(d) { return getPartyAbbreviation(d.party); }));
 	    //y.domain([0, 1]);
-	    y.domain([0, 100 ] );	
+	    y.domain([0, 100 ] );
 	    svg.append("g")
 	      .attr("class", "x axis")
 	      .attr("transform", "translate(0," + height + ")")
@@ -80,7 +79,7 @@ function barchart(data)
     {
     	var NUM_PARTIES = 9;
     	var nationalResults = [];
-    	
+
     	var parties = [];
     	var count = 0;
     	var vote = 0;
@@ -145,15 +144,15 @@ function barchart(data)
     		}
     	}
     	return filteredData;
+
     }
-    	
+    this.setCurrentMunicipality = function(value)
+    {
+    	setMunicipality(value);
+    }
+    function setMunicipality(value)
+    {
+    	currentMunicipality = value;
+    }
 }
-
- 
-	    
-
-
-
-
-
 

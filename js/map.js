@@ -1,10 +1,13 @@
 function map() {
     data = {};
+
+    var municipalityToBarchart;
+
     var availableTags = [];
     var zoom = d3.behavior.zoom()
         .scaleExtent([1, 8])
-        .on("zoom", move);
-
+        .on("zoom", move); 
+    var currentMunicipality;
     var tooltip = d3.select("body")
         .append("div")
         .style("position", "absolute")
@@ -71,10 +74,11 @@ function map() {
 
 
     }
+    
    
     function selectMunicipality(value) {
-
-       if(value !== "") {
+        bc.setCurrentMunicipality(value);
+        if(value !== "") {
             municipality.style("fill", function(d){
                     if (value == d.properties.name){
                         return "purple";
@@ -85,6 +89,7 @@ function map() {
             })
         }
     };
+
      //zoom and panning method, this is code from the labs.
     function move() {
         var t = d3.event.translate;
@@ -109,5 +114,9 @@ function map() {
     }).keyup();
 
 
+
+
 }
+
+
 
