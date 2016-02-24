@@ -23,3 +23,17 @@ text {
     font-size: 12px;
     fill: #888;
 }*/
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+line {
+    stroke: black;
+}
+
+text {
+    font-family: Arial;
+    font-size: 9pt;
+}
