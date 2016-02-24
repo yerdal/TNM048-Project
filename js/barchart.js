@@ -12,9 +12,10 @@ function barchart(data)
 	var filteredData = [];
 	filteredData = filterData(data);
 
+
 	var nationalResults = [];
 	nationalResults = calcNationalResults(filteredData);
-	
+
   	var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 900 - margin.left - margin.right,
 
@@ -39,16 +40,16 @@ function barchart(data)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");    
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
     draw(nationalResults);
 
-	function draw(data) 
+	function draw(data)
 	{
 	    x.domain(data.map(function(d) { return getPartyAbbreviation(d.party); }));
 	    //y.domain([0, 1]);
-	    y.domain([0, 100 ] );	
+	    y.domain([0, 100 ] );
 	    svg.append("g")
 	      .attr("class", "x axis")
 	      .attr("transform", "translate(0," + height + ")")
@@ -80,7 +81,7 @@ function barchart(data)
     {
     	var NUM_PARTIES = 9;
     	var nationalResults = [];
-    	
+
     	var parties = [];
     	var count = 0;
     	var vote = 0;
@@ -145,15 +146,7 @@ function barchart(data)
     		}
     	}
     	return filteredData;
+
     }
-    	
+
 }
-
- 
-	    
-
-
-
-
-
-
