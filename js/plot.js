@@ -1,12 +1,17 @@
 
 function plot(){
   var data2014 = [];
+  var votes2014 = [];
+  var moderat2014 = 0;
 
   var data2010 = [];
+  var votes2010 = [];
 
   var data2006 = [];
+  var votes2006 = [];
 
   var data2002 = [];
+  var votes2002 = [];
 
   var xValues = [2002, 2006, 2010, 2014];
   var yValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -26,6 +31,31 @@ function plot(){
   var y = d3.scale.linear()
       .range([height, 0]);
 
+
+  var svg = d3.select("#plotchart").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+  var g = svg.append("svg:g")
+      .attr("transform", "translate(0, 200)");
+
+  var line = d3.svg.line()
+      .x(function(d,i){
+        console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
+  			// return the X coordinate where we want to plot this datapoint
+  			return x(i);
+      })
+      .y(function(d){
+        // verbose logging to show what's actually being done
+  			console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
+  			// return the Y coordinate where we want to plot this datapoint
+  			return y(d);
+      })
+
+
   var xAxis = d3.svg.axis()
       .scale(x)
       .tickValues(xValues)
@@ -38,46 +68,24 @@ function plot(){
 
   var color = d3.scale.category20();
 
-  var line = d3.svg.line()
-      .x(function(d,i){
-        console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
-				// return the X coordinate where we want to plot this datapoint
-				return x(i);
-      })
-      .y(function(d){
-        // verbose logging to show what's actually being done
-				console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
-				// return the Y coordinate where we want to plot this datapoint
-				return y(d);
-      })
-
-  var svg = d3.select("#plotchart").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
   //load data for 2014
   d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
       self.data = data;
       data.forEach(function(d){
         data2014.push(d);
+        votes2014.push(d.votes);
       })
 
-          var maxY = d3.max(data, function(d){
-              console.log("test", d["votes"]);
-              return d["Year=2014"];
-          })
   });
 
   //load data for 2010
   d3.csv("data/Swedish_Election_2010.csv", function(error, data) {
       self.data = data;
       data.forEach(function(d){
-
         data2010.push(d);
-
+        //console.log("Vote", d.votes);
+        votes2010.push(d.votes);
       })
   });
 
@@ -87,7 +95,7 @@ function plot(){
       data.forEach(function(d){
         //console.log( "HEJ", d);
         data2006.push(d);
-
+        votes2006.push(d.votes);
       })
   });
 
@@ -97,8 +105,10 @@ function plot(){
       data.forEach(function(d){
         //console.log( "HEJ", d);
         data2002.push(d);
+        votes2002.push(d.votes);
 
       })
+
 
       //define the domain of the scatter plot axes
       x.domain(d3.extent(xValues, function(d){return d;}));
@@ -107,11 +117,18 @@ function plot(){
   });
 
 
+
+
   function draw(){
-    console.log("data2014", data2014[0]);
+    /*console.log("data2014", data2014[0]);
     console.log("data2010", data2010[0]);
     console.log("data2006", data2006[0]);
     console.log("data2002", data2002[0]);
+    console.log("Votes2014", votes2014[0]);
+    console.log("Votes2010", votes2010[0]);
+    console.log("Votes2006", votes2006[0]);
+    console.log("Votes2002", votes2002[0]);*/
+    electionForParty(data2014);
 
 /*    var graph = d3.select("#graph").append("svg:svg")
 			      .attr("width", w + m[1] + m[3])
@@ -144,6 +161,20 @@ function plot(){
       .data(self.data)
       .text("Election result (%)");
 
+  }
+
+  function electionForParty(data){
+    data.forEach(function(d){
+      if(d.party == "Moderaterna"){
+        console.log("Moderat", d.party);
+        console.log("VoteM", d.votes);
+      }
+      else if(d.party == "Centerpartiet"){
+        console.log("Centerpartiet", d.party);
+        console.log("VoteC", d.votes);
+      }
+
+    })
   }
 
 }
