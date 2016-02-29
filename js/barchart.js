@@ -41,6 +41,9 @@ function barchart(data)
 
 	function draw(data)
 	{
+        console.log($('#blocks').is(":checked"));
+        if($('#blocks').is(":checked"))
+            data = filterByBlock(data);
 		svg.selectAll(".bar").remove();
 		svg.selectAll(".axis").remove();	
 		svg.selectAll("g").remove();
