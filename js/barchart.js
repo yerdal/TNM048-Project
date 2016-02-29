@@ -165,7 +165,6 @@ function barchart(data)
     			municipalityData.push(filteredData[i]);
     		}	
     	}
-    	findBiggestCoalition(municipalityData);
         municipalityData = filterByBlock(municipalityData);
     	draw(municipalityData);
     		    	
@@ -211,15 +210,18 @@ function barchart(data)
     }
     function findBiggestCoalition(data)
     {
+    	console.log(data);
     	var largestVal = data[0].votes;
+    	biggestPartyCoalition = data[0].party;
     	for (var i = 1; i < data.length; i++)
     	{
-    		if (parseFloat(data[i].votes > largestVal))
+    		if (data[i].votes > largestVal)
     		{
     			largestVal = data[i].votes;
     			biggestPartyCoalition = data[i].party;
     		}
     	}
+
     }
 
     function filterByBlock(data) 
