@@ -1,5 +1,7 @@
 function barchart(data)
 {
+	var municipalityData = [];
+	var blockMunicipalityData = [];
 	var barchartDiv = $("#barchart");
 	var results;
 	var str = "..";
@@ -154,7 +156,7 @@ function barchart(data)
 
     function filterByMunicipality()
     {
-    	var municipalityData = [];
+    	municipalityData = [];
     	for (var i = 0; i < filteredData.length; i++)
     	{
     		if (filteredData[i].region.indexOf(currentMunicipality) != -1)
@@ -162,8 +164,8 @@ function barchart(data)
     			municipalityData.push(filteredData[i]);
     		}	
     	}
-        municipalityData = filterByBlock(municipalityData);
-    	draw(municipalityData);
+        blockMunicipalityData = filterByBlock(municipalityData);
+    	draw(blockMunicipalityData);
     		    	
     }
     function getPartyColor(party)
@@ -207,7 +209,6 @@ function barchart(data)
     }
     function findBiggestCoalition(data)
     {
-    	console.log(data);
     	var largestVal = data[0].votes;
     	biggestPartyCoalition = data[0].party;
     	for (var i = 1; i < data.length; i++)
@@ -235,8 +236,10 @@ function barchart(data)
     }
 
    checkBox.onchange = function() {
+   		console.log(blockMunicipalityData);
+   		console.log(municipalityData);
        if($('#blocks').is(":checked")) {
-           draw(filterByBlock(municipalityData));
+           draw(blockMunicipalityData);
        }
        else { 
            draw(municipalityData);
