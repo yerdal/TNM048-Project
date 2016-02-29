@@ -6,8 +6,7 @@ function barchart(data)
 	var colormap = d3.scale.category20();
 	var currentMunicipality = "Sweden"; // national data by default
 	var keys = d3.keys(data[0]);
-
-	var filteredData = [];
+    var filteredData = [];
 	filterData(data);
 	var nationalResults = [];
 	calcNationalResults(filteredData);
@@ -125,6 +124,10 @@ function barchart(data)
     		return "FP";
     	else if (party == "övriga partier")
     		return "Ö";
+        else if (party == "Blue")
+            return "Blått block";
+        else if (party == "Red")
+            return "Rött block";
     }
     function filterData()
     {
@@ -160,6 +163,17 @@ function barchart(data)
     	}
         draw(municipalityData);
     		    	
+    }
+
+    function filterByBlock(data) {
+       var blockData = [];
+       blue = (parseFloat(data[0]["votes"])+parseFloat(data[1]["votes"])+parseFloat(data[2]["votes"])+parseFloat(data[3]["votes"])).toFixed(1);
+       red = (parseFloat(data[4]["votes"])+parseFloat(data[5]["votes"])+parseFloat(data[6]["votes"])).toFixed(1);
+       rest = (parseFloat(data[7]["votes"])+parseFloat(data[8]["votes"])).toFixed(1);
+        blockData.push({"party":"Blue", "region":data[0]["region"], "votes": blue});
+        blockData.push({"party":"Red", "region":data[0]["region"], "votes": red});
+        blockData.push({"party":"övriga partier", "region":data[0]["region"], "votes": rest});
+        return blockData;
     }
 }
 
