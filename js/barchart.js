@@ -10,7 +10,7 @@ function barchart(data)
 	filterData(data);
 	var nationalResults = [];
 	calcNationalResults(filteredData);
-
+    var checkBox = document.getElementById("blocks");
   	var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 900 - margin.left - margin.right,
 
@@ -42,9 +42,6 @@ function barchart(data)
 
 	function draw(data)
 	{
-        console.log($('#blocks').is(":checked"));
-        if($('#blocks').is(":checked"))
-            data = filterByBlock(data);
 		svg.selectAll(".bar").remove();
 		svg.selectAll(".axis").remove();	
 		svg.selectAll("g").remove();
@@ -234,5 +231,15 @@ function barchart(data)
         findBiggestCoalition(blockData);
         return blockData;
     }
+
+   checkBox.onchange = function() {
+       if($('#blocks').is(":checked")) {
+           draw(filterByBlock(municipalityData));
+       }
+       else { 
+           draw(municipalityData);
+    }
+   }
+    
 }
 
