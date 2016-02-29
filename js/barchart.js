@@ -38,6 +38,7 @@ function barchart(data)
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     draw(nationalResults);
     var currentData = [];
+    var biggestPartyCoalition;
 
 	function draw(data)
 	{
@@ -71,7 +72,7 @@ function barchart(data)
 	      .attr("x", function(d) {  return x(d.party); })
 	      .attr("width", x.rangeBand())
 	      .attr("y", function(d) {  return y(d.votes); })
-	      .style("fill", function(d){ return colormap(d.party)})
+	      .style("fill", function(d){ return getPartyColor(d.party)})
 	      .attr("height", function(d) { return height - y(d.votes); });
 
 
@@ -164,18 +165,73 @@ function barchart(data)
     			municipalityData.push(filteredData[i]);
     		}	
     	}
-        draw(municipalityData);
+    	findBiggestCoalition(municipalityData);
+        municipalityData = filterByBlock(municipalityData);
+    	draw(municipalityData);
     		    	
     }
+    function getPartyColor(party)
+    {
+    	if (party == "Moderaterna" || party == "Blue")
+    		return "#3333ff"
+    	else if (party == "Socialdemokraterna" || party == "Red")
+    		return "#ff3300";
+    	else if (party == "Miljöpartiet")
+    		return "#33cc33"
+    	else if (party == "Sverigedemokraterna")
+    		return "#e6e600";
+    	else if (party == "Kristdemokraterna")
+    		return "#000099";
+    	else if (party == "Vänsterpartiet")
+    		return "#cc0000";
+    	else if (party == "Centerpartiet")
+    		return "#009900";
+    	else if (party == "Folkpartiet")
+    		return "#00ccff";
+    	else if (party == "övriga partier")
+    		return "#000000";
 
-    function filterByBlock(data) {
-       var blockData = [];
-       blue = (parseFloat(data[0]["votes"])+parseFloat(data[1]["votes"])+parseFloat(data[2]["votes"])+parseFloat(data[3]["votes"])).toFixed(1);
-       red = (parseFloat(data[4]["votes"])+parseFloat(data[5]["votes"])+parseFloat(data[6]["votes"])).toFixed(1);
-       rest = (parseFloat(data[7]["votes"])+parseFloat(data[8]["votes"])).toFixed(1);
+    }
+    this.getBiggestCoalition = function()
+    {
+    	return getPartyColor(biggestPartyCoalition);
+    }
+    function findBiggestParty(municipalityData)
+    {
+    	var largestVal = municipalityData[0].votes;
+    	biggestParty = municipalityData[0].party;
+    	for (var i = 1; i < municipalityData.length; i++)
+    	{
+    		if(parseFloat(municipalityData[i].votes) > largestVal)
+    		{
+    			largestVal = municipalityData[i].votes;
+    			biggestParty = municipalityData[i].party;
+    		}
+    	}
+    }
+    function findBiggestCoalition(data)
+    {
+    	var largestVal = data[0].votes;
+    	for (var i = 1; i < data.length; i++)
+    	{
+    		if (parseFloat(data[i].votes > largestVal))
+    		{
+    			largestVal = data[i].votes;
+    			biggestPartyCoalition = data[i].party;
+    		}
+    	}
+    }
+
+    function filterByBlock(data) 
+    {
+        var blockData = [];
+        blue = (parseFloat(data[0]["votes"])+parseFloat(data[1]["votes"])+parseFloat(data[2]["votes"])+parseFloat(data[3]["votes"])).toFixed(1);
+        red = (parseFloat(data[4]["votes"])+parseFloat(data[5]["votes"])+parseFloat(data[6]["votes"])).toFixed(1);
+        rest = (parseFloat(data[7]["votes"])+parseFloat(data[8]["votes"])).toFixed(1);
         blockData.push({"party":"Blue", "region":data[0]["region"], "votes": blue});
         blockData.push({"party":"Red", "region":data[0]["region"], "votes": red});
         blockData.push({"party":"övriga partier", "region":data[0]["region"], "votes": rest});
+        findBiggestCoalition(blockData);
         return blockData;
     }
 }
