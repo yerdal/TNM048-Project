@@ -78,14 +78,16 @@ function map() {
     }
     
     function selectMunicipality(value) {
-        bc.setCurrentMunicipality(value);
-        var biggestParty = bc.getBiggestParty();
 
         if(value !== "") {
             municipality.style("fill", function(d){
 
                     if (value == d.properties.name){
+                        
+                        bc.setCurrentMunicipality(value);
+                        var biggestParty = bc.getBiggestParty();
                         return biggestParty;
+
                     }
                     else {
                         return "lightblue";
