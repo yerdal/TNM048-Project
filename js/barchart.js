@@ -39,6 +39,7 @@ function barchart(data)
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     draw(nationalResults);
     var currentData = [];
+    var biggestParty;
 
 	function draw(data)
 	{
@@ -69,7 +70,7 @@ function barchart(data)
 	      .attr("x", function(d) {  return x(d.party); })
 	      .attr("width", x.rangeBand())
 	      .attr("y", function(d) {  return y(d.votes); })
-	      .style("fill", function(d){ return colormap(d.party)})
+	      .style("fill", function(d){ return getPartyColor(d.party)})
 	      .attr("height", function(d) { return height - y(d.votes); });
 
 
@@ -156,8 +157,51 @@ function barchart(data)
     			municipalityData.push(filteredData[i]);
     		}	
     	}
+    	findBiggestParty(municipalityData);
     	draw(municipalityData);
     		    	
+    }
+    function getPartyColor(party)
+    {
+    	if (party == "Moderaterna")
+    		return "#3333ff"
+    	else if (party == "Socialdemokraterna")
+    		return "#ff3300";
+    	else if (party == "Miljöpartiet")
+    		return "#33cc33"
+    	else if (party == "Sverigedemokraterna")
+    		return "#e6e600";
+    	else if (party == "Kristdemokraterna")
+    		return "#000099";
+    	else if (party == "Vänsterpartiet")
+    		return "#cc0000";
+    	else if (party == "Centerpartiet")
+    		return "#009900";
+    	else if (party == "Folkpartiet")
+    		return "#00ccff";
+    	else if (party == "övriga partier")
+    		return "#000000";
+    }
+    this.getBiggestParty = function()
+    {
+    	console.log(biggestParty);
+    	return getPartyColor(biggestParty);
+    }
+    function findBiggestParty(municipalityData)
+    {
+    	var largestVal = municipalityData[0].votes;
+    	biggestParty = municipalityData[0].party;
+    	for (var i = 1; i < municipalityData.length; i++)
+    	{
+    		console.log(largestVal);
+    		console.log(municipalityData[i].votes)
+    		if(parseFloat(municipalityData[i].votes) > largestVal)
+    		{
+    			console.log("TJO");
+    			largestVal = municipalityData[i].votes;
+    			biggestParty = municipalityData[i].party;
+    		}
+    	}
     }
 }
 

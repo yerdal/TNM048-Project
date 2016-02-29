@@ -44,6 +44,7 @@ function map() {
             munis.filter(function(d) {
                 availableTags.push((d.properties.name));
             });
+
             draw(munis, data);
 		});
         
@@ -69,19 +70,22 @@ function map() {
                 return tooltip.style("visibility", "hidden");
         })
         .on("click", function(d) {
+
           selectMunicipality(d.properties.name);
         });
 
 
     }
     
-   
     function selectMunicipality(value) {
         bc.setCurrentMunicipality(value);
+        var biggestParty = bc.getBiggestParty();
+
         if(value !== "") {
             municipality.style("fill", function(d){
+
                     if (value == d.properties.name){
-                        return "purple";
+                        return biggestParty;
                     }
                     else {
                         return "lightblue";
