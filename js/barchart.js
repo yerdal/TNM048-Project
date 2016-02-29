@@ -38,7 +38,7 @@ function barchart(data)
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     draw(nationalResults);
     var currentData = [];
-    var biggestParty;
+    var biggestPartyCoalition;
 
 	function draw(data)
 	{
@@ -162,15 +162,15 @@ function barchart(data)
     			municipalityData.push(filteredData[i]);
     		}	
     	}
-    	findBiggestParty(municipalityData);
+    	findBiggestCoalition(municipalityData);
     	draw(municipalityData);
     		    	
     }
     function getPartyColor(party)
     {
-    	if (party == "Moderaterna")
+    	if (party == "Moderaterna" || party == "Blue")
     		return "#3333ff"
-    	else if (party == "Socialdemokraterna")
+    	else if (party == "Socialdemokraterna" || party == "Red")
     		return "#ff3300";
     	else if (party == "Miljöpartiet")
     		return "#33cc33"
@@ -186,11 +186,11 @@ function barchart(data)
     		return "#00ccff";
     	else if (party == "övriga partier")
     		return "#000000";
+
     }
-    this.getBiggestParty = function()
+    this.getBiggestCoalition = function()
     {
-    	console.log(biggestParty);
-    	return getPartyColor(biggestParty);
+    	return getPartyColor(biggestPartyCoalition);
     }
     function findBiggestParty(municipalityData)
     {
@@ -198,20 +198,28 @@ function barchart(data)
     	biggestParty = municipalityData[0].party;
     	for (var i = 1; i < municipalityData.length; i++)
     	{
-    		console.log(largestVal);
-    		console.log(municipalityData[i].votes)
     		if(parseFloat(municipalityData[i].votes) > largestVal)
     		{
-    			console.log("TJO");
     			largestVal = municipalityData[i].votes;
     			biggestParty = municipalityData[i].party;
     		}
     	}
-        draw(municipalityData);
-    		    	
+    }
+    function findBiggestCoalition(data)
+    {
+    	var largestVal = data[0].votes;
+    	for (var i = 1; i < data.length; i++)
+    	{
+    		if (parseFloat(data[i].votes > largestVal))
+    		{
+    			largestVal = data[i].votes;
+    			biggestPartyCoalition = data[i].party;
+    		}
+    	}
     }
 
-    function filterByBlock(data) {
+    function filterByBlock(data) 
+    {
        var blockData = [];
        blue = (parseFloat(data[0]["votes"])+parseFloat(data[1]["votes"])+parseFloat(data[2]["votes"])+parseFloat(data[3]["votes"])).toFixed(1);
        red = (parseFloat(data[4]["votes"])+parseFloat(data[5]["votes"])+parseFloat(data[6]["votes"])).toFixed(1);
@@ -219,6 +227,7 @@ function barchart(data)
         blockData.push({"party":"Blue", "region":data[0]["region"], "votes": blue});
         blockData.push({"party":"Red", "region":data[0]["region"], "votes": red});
         blockData.push({"party":"övriga partier", "region":data[0]["region"], "votes": rest});
+        findBiggestCoalition(blockData);
         return blockData;
     }
 }

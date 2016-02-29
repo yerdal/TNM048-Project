@@ -85,7 +85,7 @@ function map() {
                     if (value == d.properties.name){
                         
                         bc.setCurrentMunicipality(value);
-                        var biggestParty = bc.getBiggestParty();
+                        var biggestParty = bc.getBiggestCoalition();
                         return biggestParty;
 
                     }
