@@ -236,14 +236,30 @@ function barchart(data)
     }
 
    checkBox.onchange = function() {
-   		console.log(blockMunicipalityData);
-   		console.log(municipalityData);
-       if($('#blocks').is(":checked")) {
-           draw(blockMunicipalityData);
-       }
-       else { 
-           draw(municipalityData);
-    }
+   		console.log(filteredData);
+       	if($('#blocks').is(":checked")) 
+       	{
+      		if (blockMunicipalityData.length == 0)
+      		{
+      			draw(filterByBlock(nationalResults));
+      		}
+      		else
+      		{
+           		draw(blockMunicipalityData);
+           	}
+       	}
+       else 
+       	{ 
+       		if (municipalityData.length == 0)
+       		{
+       			console.log("hej");
+           		draw(nationalResults);
+           	}
+           	else
+           	{
+           		draw (municipalityData);
+           	}
+    	}
    }
     
 }
