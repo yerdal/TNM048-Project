@@ -1,39 +1,24 @@
-/* SVG styling */
-/*path {
-    fill: #CED8B6;
-}
-
-line {
-    stroke: #555;
-    stroke-width: 2px;
-}
-
-line#bestfit {
-    stroke: #ddd;
-    stroke-width: 10px;
-}
-
-#xAxis path, #yAxis path, #xAxis line, #yAxis line {
-    stroke: #ccc;
-    fill: none;
-    shape-rendering: crispEdges;
-}
-
-text {
-    font-size: 12px;
-    fill: #888;
-}*/
-path {
+/*.plotchart path {
     stroke: steelblue;
     stroke-width: 2;
     fill: none;
 }
 
-line {
-    stroke: black;
+*/
+
+
+.plotchart line {
+    fill:none;
+    stroke:steelblue;
+    stroke-width: 1.5px;
 }
 
 text {
     font-family: Arial;
     font-size: 9pt;
+}
+.line{
+    fill:none;
+    stroke:steelblue;
+    stroke-width: 1.5px;
 }
