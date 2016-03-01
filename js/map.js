@@ -1,10 +1,13 @@
 function map() {
     data = {};
+
+    var municipalityToBarchart;
+
     var availableTags = [];
     var zoom = d3.behavior.zoom()
         .scaleExtent([1, 8])
-        .on("zoom", move);
-
+        .on("zoom", move); 
+    var currentMunicipality;
     var tooltip = d3.select("body")
         .append("div")
         .style("position", "absolute")
@@ -41,6 +44,7 @@ function map() {
             munis.filter(function(d) {
                 availableTags.push((d.properties.name));
             });
+
             draw(munis, data);
 		});
         
@@ -66,18 +70,25 @@ function map() {
                 return tooltip.style("visibility", "hidden");
         })
         .on("click", function(d) {
+
           selectMunicipality(d.properties.name);
         });
 
 
     }
-   
+    
     function selectMunicipality(value) {
 
-       if(value !== "") {
+        if(value !== "") {
             municipality.style("fill", function(d){
+
                     if (value == d.properties.name){
-                        return "purple";
+                        
+                        bc.setCurrentMunicipality(value);
+                        var biggestParty = bc.getBiggestCoalition();
+                        console.log(biggestParty);
+                        return biggestParty;
+
                     }
                     else {
                         return "lightblue";
@@ -85,6 +96,7 @@ function map() {
             })
         }
     };
+
      //zoom and panning method, this is code from the labs.
     function move() {
         var t = d3.event.translate;
@@ -109,5 +121,9 @@ function map() {
     }).keyup();
 
 
+
+
 }
+
+
 
