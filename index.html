@@ -13,8 +13,8 @@
 </head>
 
 <body>
-    <div id="wrap">
-        <div>
+    <div class="wrapper">
+        <div class="topSide">
             <h1>Search for region
                 <input id="searchRegion" placeholder="Stockholm">
             </h1>
@@ -30,18 +30,19 @@
                 </select>
             </div>
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-1">
-                    <div id="barchart" style="height:45vh"></div>
-                    <div id="plotchart" style="height: 45vh; width: 40vw;"></div>
-                </div>
-                <div class="col-sm-1 col-sm-offset-8">
-                    <div id="map" style="height: 90vh; width: 45vw;"></div>
-                </div>
+
+        <div class="flex-container">
+            <div class="leftSide">
+                    <div id="barchart" style="height:30vh"></div>
+                    <div id="plotchart" style="height: 40vh; width: 40vw;"></div>
+            </div>
+            <div class="rightSide">
+                    <div id="map" style="height: 100vh; width: 45vw;"></div>
             </div>
         </div>
+        
     </div>
+    
 
 
 
