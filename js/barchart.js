@@ -291,13 +291,14 @@ function barchart(data)
     function findMaxPercent(data) {
         max = 0;
         count = 0;
-        console.log(data.length);
         data.forEach(function(d) {
             if(max < parseFloat(d.votes)) {
                 max = parseFloat(d.votes);
             }
         });
-        return Math.round(max/15)*15;
+        max = max.toFixed(0);
+        max = Math.ceil(max / 10) * 10;
+        return max;
         
     }
 }
