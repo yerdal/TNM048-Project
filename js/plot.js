@@ -30,7 +30,7 @@ function plot() {
     height = plotDiv.height() - margin.top - margin.bottom;
   //console.log("plotheight", plotDiv.height());
 
-  var tooltip = d3.select("body")
+  var tooltip = d3.select("#tooltipText")
     .append("div")
     .style("position", "absolute")
     .style("z-index", "10")
@@ -180,10 +180,9 @@ function plot() {
           tooltip.html("<strong style='color:" + getPartyColor(i[0].party)+ "'>"+ i[0].party + "</strong><br><strong>" + i[0].year + ": " + "</strong>"+ i[0].votes + "%" 
             + "<br><strong>" + i[1].year + ": " + "</strong>"+ i[1].votes + "%"  
             + "<br><strong>" + i[2].year + ": " + "</strong>"+ i[2].votes + "%" 
-            + "<br><strong>" + i[3].year + ": " + "</strong>"+ i[3].votes + "%")
-            .style("top", (d3.event.pageY) - 100 + "px")
-            .style("left", (d3.event.pageX) + 100+ "px");
-            //style("top", (d3.event.pageY - 28) + "px");
+            + "<br><strong>" + i[3].year + ": " + "</strong>"+ i[3].votes + "%");
+            //.style("top", (d3.event.pageY) - 100 + "px")
+            //.style("left", (d3.event.pageX) + 100+ "px");
             //return tooltip.text(i[0].party);
           })
           .on("mouseout", function(i){
