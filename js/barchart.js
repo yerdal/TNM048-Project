@@ -44,37 +44,57 @@ function barchart(data)
     var counter;
     var restVotes;
 	function draw(data)
-	{
-		svg.selectAll(".bar").remove();
-		svg.selectAll(".axis").remove();	
-		svg.selectAll("g").remove();
-	    x.domain(data.map(function(d) { return getPartyAbbreviation(d.party); }));
-	    //y.domain([0, 1]);
-	    y.domain([0, 100 ] );
-	    svg.append("g")
-	      .attr("class", "x axis")
-	      .attr("transform", "translate(0," + height + ")")
-	      .call(xAxis);
+    {
+        max = findMaxPercent(data);
+        svg.selectAll(".bar").remove();
+        svg.selectAll(".axis").remove();	
+        svg.selectAll("g").remove();
+        x.domain(data.map(function(d) { return getPartyAbbreviation(d.party); }));
+        //y.domain([0, 1]);
+        y.domain([0, max ] );
+        svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
 
-	    svg.append("g")
-	      .attr("class", "y axis")
-	      .call(yAxis)
-	      .append("text")
-	      .attr("transform", "rotate(-90)")
-	      .attr("y", 5)
-	      .attr("dy", ".71em")
-	      .style("text-anchor", "end")
+        svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis)
+          .data(data)
+          .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 5)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+         
+        svg.selectAll(".bar")
+          .data(data)
+          .enter().append("rect")
+          .attr("class", "bar")
+          .attr("x", function(d) {  return x(d.party); })
+          .attr("width", x.rangeBand())
+          .attr("y", function(d) {  return y(d.votes); })
+          .style("fill", function(d){ return getPartyColor(d.party)})
+          .attr("height", function(d) { return height - y(d.votes); })
 
-	    svg.selectAll(".bar")
-	      .data(data)
-	      .enter().append("rect")
-	      .attr("class", "bar")
-	      .attr("x", function(d) {  return x(d.party); })
-	      .attr("width", x.rangeBand())
-	      .attr("y", function(d) {  return y(d.votes); })
-	      .style("fill", function(d){ return getPartyColor(d.party)})
-	      .attr("height", function(d) { return height - y(d.votes); });
-
+        svg.selectAll("bar")
+         .data(data)
+         .enter()
+         .append("text")
+         .text(function(d) {
+             return d.votes + "%";
+          })
+         .attr("x", function(d, i) {
+            return i * (width / data.length) + 35
+          })
+         .attr("y", function(d) {
+            return height - (d.votes * 4)              
+          })
+         .attr("font-family", "sans-serif")
+         .attr("font-size", "11px")
+         .attr("fill", "white");
+        
+           
 
     }
 
@@ -268,6 +288,17 @@ function barchart(data)
            	}
     	}
    }
-    
+    function findMaxPercent(data) {
+        max = 0;
+        count = 0;
+        console.log(data.length);
+        data.forEach(function(d) {
+            if(max < parseFloat(d.votes)) {
+                max = parseFloat(d.votes);
+            }
+        });
+        return Math.round(max/15)*15;
+        
+    }
 }
 
