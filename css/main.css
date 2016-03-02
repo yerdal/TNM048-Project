@@ -7,30 +7,25 @@ html, body {
     height: 100%;
 }
 
-#wrap {
-    min-height: 100%;
-    height: auto;
-    /* Negative indent footer by its height */
-    margin: 0 auto -60px;
-    /* Pad bottom by footer height */
-    padding: 0 0 60px;
-    text-align: center;
+.flex-container {
+    display: flex;
+
 }
 
-.container {
-    margin: 0;
-    margin-top: -5%;
-    padding: 0;
+.aside {
+    flex: 1 40%;
 }
 
-.row {
-    text-align: center;
+.topSide {
+    display: flex;
+    flex: 1 100%;
+    flex-direction: row;
+    margin-right: 10vw;
+    align-content: space-around;
+
 }
 
-#mapDiv {
-    width: 800px;
-}
+#barchart {
 
-#plotChart {
-    margin-bottom: 70%;
+    margin-bottom: 22%;
 }
