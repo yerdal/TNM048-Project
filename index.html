@@ -14,38 +14,35 @@
 
 <body>
     <div id="wrap">
-        <h1>Search for region
-            <input id="searchRegion" placeholder="Stockholm">
-        </h1>
-        <div class="checkbox">
-             <input type="checkbox" id="blocks"> Check me out
-        </div>
-        <div class="dropdown">
-        <select id="chooseYear">
-  <option value="2014">2014</option>
-  <option value="2010">2010</option>
-  <option value="2006">2006</option>
-  <option value="2002">2002</option>
-</select>
+        <div>
+            <h1>Search for region
+                <input id="searchRegion" placeholder="Stockholm">
+            </h1>
+            <div class="checkbox">
+                 <input type="checkbox" id="blocks"> Check me out
+            </div>
+            <div class="dropdown">
+                <select id="chooseYear">
+                  <option value="2014">2014</option>
+                  <option value="2010">2010</option>
+                  <option value="2006">2006</option>
+                  <option value="2002">2002</option>
+                </select>
+            </div>
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
-                    <h1 class="barChartText">Barchart</h1>
-                    <div id="barchart" style="height:80vh"></div>
-                 </div>
-
-                <div class="col-lg-4 col-lg-offset-5">
-                    <h1>Map</h1>
-                    <div id="map" style="height: 90vh; width: 30vw;"></div>
+                <div class="col-sm-1">
+                    <div id="barchart" style="height:45vh"></div>
+                    <div id="plotchart" style="height: 45vh; width: 40vw;"></div>
                 </div>
-                <div class="col-xs-6">
-                <div id="plotchart" style="height: 40vh; width: 40vw;">
-                  <h1>PLOTCHART</h1>
+                <div class="col-sm-1 col-sm-offset-8">
+                    <div id="map" style="height: 90vh; width: 45vw;"></div>
                 </div>
             </div>
         </div>
     </div>
+
 
 
 
