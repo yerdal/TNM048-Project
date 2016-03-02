@@ -28,6 +28,17 @@ function plot() {
     width = plotDiv.width() - margin.right - margin.left,
     height = plotDiv.height() - margin.top - margin.bottom;
   //console.log("plotheight", plotDiv.height());
+
+  var tooltip = d3.select("body")
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden");
+
+  var zoom = d3.behavior.zoom()
+    .scaleExtent([1, 8])
+    .on("zoom", move); 
+
   var x = d3.scale.linear()
     .range([0, width]).domain([2002,2014]);
 
@@ -55,9 +66,9 @@ function plot() {
   var color = d3.scale.category20();
 
   var line = d3.svg.line()
-      .x(function(d) { console.log("year", d.year);
+      .x(function(d) { //console.log("year", x(d.year));
         return x(d.year); })
-      .y(function(d) { //console.log("vote", d);
+      .y(function(d, i) { //console.log("vote", d.votes);
         return y(d.votes); })
       .interpolate("linear");
 
@@ -92,11 +103,11 @@ function plot() {
       data2002.push(d);
     })
     //define the domain of the scatter plot axes
-    draw();
+    filterData();
   });
 
 
-  function draw() {
+  function filterData() {
 
     //Filter data for every year
     var votes2014 = calcNationalResults(data2014);
@@ -116,18 +127,9 @@ function plot() {
     var sdVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Sverigedemokraterna");
     var ovrigVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "övriga partier");
 
-    var totData = [moderatVotes, centerVotes];
+    var totData = [];
 
-    /*var dataGroup = d3.nest()
-      .key(function(d){
-        console.log("test", d.party);
-        return d.party;
-      })
-      .entries(votes2014);
-
-      console.log("grupp", dataGroup);*/
-
-    /*totData.push(moderatVotes);
+    totData.push(moderatVotes);
     totData.push(centerVotes);
     totData.push(folkVotes);
     totData.push(kristVotes);
@@ -135,9 +137,13 @@ function plot() {
     totData.push(socVotes);
     totData.push(vansterVotes);
     totData.push(sdVotes);
-    totData.push(ovrigVotes);*/
-    //console.log(moderatVotes);
+    totData.push(ovrigVotes);
+
     //console.log("tot", totData);
+    drawPlot(totData);
+  }
+
+  function drawPlot(data){
 
     // Add x axis and title.
     svg.append("g")
@@ -148,7 +154,6 @@ function plot() {
       .attr("x", width - 50)
       .attr("y", -6)
       .text("Election Year");
-
 
     svg.append("g")
       .attr("class", "y axis")
@@ -161,93 +166,175 @@ function plot() {
       .attr("dy", ".71em")
       .text("Election result (%)");
 
-
-      svg.append("svg:path")
-      .attr("d", line(moderatVotes))
-      //.data(moderatVotes)
+      data.forEach(function(d) {
+        //console.log("test", line(d));
+        svg.append("path")
+            .attr("class", "line")
+            .attr("d", line(d))
+            .attr("stroke", getPartyColor(d[0].party))
+            .on("mouseover", function(i){
+              i = d;
+              tooltip.style("visibility", "visible");
+              console.log("Mouseover", i);
+              tooltip.transition()
+              .duration(200)
+              .style("opacity", .9);
+              tooltip.html(i[0].party + "<br>" + i[0].year + ": " + i[0]. votes + "%" + "<br>" + i[1].year + ": " + i[1]. votes + "%" + 
+                "<br>" + i[2].year + ": " + i[2]. votes + "%" + "<br>" + i[3].year + ": " + i[3]. votes + "%" )
+              .style("left", (d3.event.pageX) + "px")
+              .style("top", (d3.event.pageY - 28) + "px");
+              //return tooltip.text(i[0].party);
+            })
+            .on("mouseon",function(i){
+              console.log("test", d);
+              i = d;
+               tooltip.transition()
+              .duration(200)
+              .style("opacity", .9);
+              tooltip.html(i[0].party + "<br>" + i.votes)
+              .style("left", (d3.event.pageX) + "px")
+              .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on("mouseout", function(i){
+              i = d;
+              console.log("mouseout");
+             return tooltip.style("visibility", "hidden"); 
+            });
+      });
+      /*svg.append("svg:path")
+      .data(data)
+      .enter()
+      .append("g")
       .attr("class", "line")
-      /*.attr("stroke", function(d){
-          console.log("tet", d.votes);
-            return d.votes;
-      })*/
-      .attr("stroke-width", 3);
+      .attr("d", function(d){
+        console.log("tet", d);
+        return line(d);
+      })
+      .attr("stroke", function(d){
+        console.log("color", getPartyColor(d[0].party));
+        return getPartyColor(d[0].party);
+      });*/
 
   }
 
+   function getPartyColor(party)
+    {
+      if (party == "Moderaterna" || party == "Blue")
+        return "#3333ff"
+      else if (party == "Socialdemokraterna" || party == "Red")
+        return "#ff3300";
+      else if (party == "Miljöpartiet")
+        return "#33cc33"
+      else if (party == "Sverigedemokraterna")
+        return "#e6e600";
+      else if (party == "Kristdemokraterna")
+        return "#000099";
+      else if (party == "Vänsterpartiet")
+        return "#cc0000";
+      else if (party == "Centerpartiet")
+        return "#009900";
+      else if (party == "Folkpartiet")
+        return "#00ccff";
+      else if (party == "övriga partier")
+        return "#000000";
+
+    }
+
   function forEachParty(data1, data2, data3, data4, chosenParty) {
-    var result = [];
+      var result = [];
 
-    data1.forEach(function(d) {
-      if (d.party == chosenParty) {
-        result.push({"year": 2014, 
-                      "party": d.party,
-                      "votes": d.votes});
-      }
-    })
-    data2.forEach(function(d) {
-      if (d.party == chosenParty) {
-        result.push({"year": 2010, 
-                      "party": d.party,
-                      "votes": d.votes});
-      }
-    })
+      data1.forEach(function(d) {
+        if (d.party == chosenParty) {
+          if(result.length > 0){
+            result.push({"year" : 2014,
+                         "votes": d.votes})
+          }else{
+              result.push({"year": 2014, 
+                        "party": d.party,
+                        "votes": d.votes});
+          }
+        }
+      })
+      data2.forEach(function(d) {
+        if (d.party == chosenParty) {
+          if(result.length > 0){
+            result.push({"year": 2010, 
+                        "votes": d.votes});
+          }else{
+            result.push({"year": 2010, 
+                        "party": d.party,
+                        "votes": d.votes});  
+          }
+        }
+      })
 
-    data3.forEach(function(d) {
-      if (d.party == chosenParty) {
-        result.push({"year": 2006, 
-                      "party": d.party,
-                      "votes": d.votes});
-      }
-    })
-    data4.forEach(function(d) {
-      if (d.party == chosenParty) {
-        result.push({"year": 2002, 
-                      "party": d.party,
-                      "votes": d.votes});
-      }
-    })
-    //console.log(result);
-    return result;
+      data3.forEach(function(d) {
+        if (d.party == chosenParty) {
+           if(result.length > 0){
+            result.push({"year": 2006, 
+                        "votes": d.votes});
+          }else{
+            result.push({"year": 2006, 
+                        "party": d.party,
+                        "votes": d.votes});  
+          }
+
+        }
+      })
+      data4.forEach(function(d) {
+        if (d.party == chosenParty) {
+           if(result.length > 0){
+            result.push({"year": 2002, 
+                        "votes": d.votes});
+          }else{
+            result.push({"year": 2002, 
+                        "party": d.party,
+                        "votes": d.votes});  
+          }
+        }
+      })
+      //console.log(result);
+      return result;
   }
 
   function calcNationalResults(data) {
-    var filteredData = [];
-    for (var i = 0; i < data.length; i++) {
-      if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar" && (data[i].region != "1229 Bara")) {
-        filteredData.push(data[i]);
-      }
-    }
-
-    var NUM_PARTIES = 9;
-    var nationalResults = [];
-    var parties = [];
-    var count = 0;
-    var vote = 0;
-    for (var i = 0; i < NUM_PARTIES; i++) {
-      nationalResults.push({
-        "party": filteredData[i].party,
-        "region": "Sweden",
-        "votes": 0
-      })
-    }
-
-    for (var i = 0; i < filteredData.length; i++) {
-      for (var k = 0; k < NUM_PARTIES; k++) {
-        if (nationalResults[k].party == filteredData[i].party) {
-          nationalResults[k].votes += parseFloat(filteredData[i].votes);
-          break;
+      var filteredData = [];
+      for (var i = 0; i < data.length; i++) {
+        if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar" && (data[i].region != "1229 Bara")) {
+          filteredData.push(data[i]);
         }
-
       }
-      count += 1 / 9;
+
+      var NUM_PARTIES = 9;
+      var nationalResults = [];
+      var parties = [];
+      var count = 0;
+      var vote = 0;
+      for (var i = 0; i < NUM_PARTIES; i++) {
+        nationalResults.push({
+          "party": filteredData[i].party,
+          "region": "Sweden",
+          "votes": 0
+        })
+      }
+
+      for (var i = 0; i < filteredData.length; i++) {
+        for (var k = 0; k < NUM_PARTIES; k++) {
+          if (nationalResults[k].party == filteredData[i].party) {
+            nationalResults[k].votes += parseFloat(filteredData[i].votes);
+            break;
+          }
+
+        }
+        count += 1 / 9;
+      }
+      for (var i = 0; i < nationalResults.length; i++) {
+        nationalResults[i].votes /= count;
+        nationalResults[i].votes = (nationalResults[i].votes).toFixed(1);
+      }
+      //filteredData.push(nationalResults);
+      //console.log("natres", nationalResults);
+      return nationalResults;
     }
-    for (var i = 0; i < nationalResults.length; i++) {
-      nationalResults[i].votes /= count;
-      nationalResults[i].votes = (nationalResults[i].votes).toFixed(1);
-    }
-    //filteredData.push(nationalResults);
-    //console.log("natres", nationalResults);
-    return nationalResults;
-  }
 
 }
