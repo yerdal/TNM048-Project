@@ -165,7 +165,14 @@ function barchart(data)
     		}	
     	}
         blockMunicipalityData = filterByBlock(municipalityData);
-    	draw(blockMunicipalityData);
+        if($('#blocks').is(":checked")) 
+        {
+    	   draw(blockMunicipalityData);
+        }
+        else
+        {
+            draw(municipalityData);
+        }
     		    	
     }
     function getPartyColor(party)

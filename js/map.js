@@ -53,8 +53,6 @@ function map() {
     function draw(munis, data) {
         municipality = g.selectAll(".municipality").data(munis);
         
-    
-
         municipality.enter().insert("path")
             .attr("class", "country")
             .attr("d", path)
@@ -78,7 +76,7 @@ function map() {
     }
     
     function selectMunicipality(value) {
-
+        console.log("HEJ");
         if(value !== "") {
             municipality.style("fill", function(d){
 
