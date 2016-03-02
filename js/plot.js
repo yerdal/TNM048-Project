@@ -16,6 +16,7 @@ function plot() {
   var yValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   var self = this;
 
+  var counter = 0;
 
   var plotDiv = $("#plotchart");
 
@@ -296,15 +297,17 @@ function plot() {
   function calcNationalResults(data) {
       var filteredData = [];
       for (var i = 0; i < data.length; i++) {
-        if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar" && (data[i].region != "1229 Bara")) {
+        if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar" 
+          && (data[i].region != "1229 Bara")) {
           filteredData.push(data[i]);
-        }
-      }
 
+        }
+        counter+=1/11;
+      }
+      console.log(counter);
       var NUM_PARTIES = 9;
       var nationalResults = [];
       var parties = [];
-      var count = 0;
       var vote = 0;
       for (var i = 0; i < NUM_PARTIES; i++) {
         nationalResults.push({
@@ -322,10 +325,9 @@ function plot() {
           }
 
         }
-        count += 1 / 9;
       }
       for (var i = 0; i < nationalResults.length; i++) {
-        nationalResults[i].votes /= count;
+        nationalResults[i].votes /= counter;
         nationalResults[i].votes = (nationalResults[i].votes).toFixed(1);
       }
       //filteredData.push(nationalResults);
