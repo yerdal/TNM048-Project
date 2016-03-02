@@ -82,7 +82,7 @@ function map() {
                     if (value == d.properties.name){
                         
                         bc.setCurrentMunicipality(value);
-                       
+                        plot1.setCurrentMunicipality(value);
                         var biggestCoalition = bc.getBiggestCoalition();
                         
                         return biggestCoalition;

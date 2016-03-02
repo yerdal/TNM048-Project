@@ -101,6 +101,7 @@ function plot() {
     //define the domain of the scatter plot axes
     filterData();
   });
+  var moderatVotes, centerVotes, folkVotes, kristVotes, milVotes, socVotes, sdVotes, ovrigVotes;
 
 
   function filterData() {
@@ -113,15 +114,15 @@ function plot() {
 
     //Create array for every party with the result in every election from 2002-2014
     // {2014, 2010, 2006, 2002}
-    var moderatVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Moderaterna");
-    var centerVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Centerpartiet");
-    var folkVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Folkpartiet");
-    var kristVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Kristdemokraterna");
-    var milVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Miljöpartiet");
-    var socVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Socialdemokraterna");
-    var vansterVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Vänsterpartiet");
-    var sdVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Sverigedemokraterna");
-    var ovrigVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "övriga partier");
+    moderatVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Moderaterna");
+    centerVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Centerpartiet");
+    folkVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Folkpartiet");
+    kristVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Kristdemokraterna");
+    milVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Miljöpartiet");
+    socVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Socialdemokraterna");
+    vansterVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Vänsterpartiet");
+    sdVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Sverigedemokraterna");
+    ovrigVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "övriga partier");
 
     var totData = [];
 
@@ -308,7 +309,6 @@ function plot() {
       var vote = 0;
       for (var i = 0; i < NUM_PARTIES; i++) {
           
-          console.log(filteredData[i]);
         nationalResults.push({
           "party": filteredData[i].party,
           "region": "Sweden",
@@ -333,6 +333,35 @@ function plot() {
       //filteredData.push(nationalResults);
       //console.log("natres", nationalResults);
       return nationalResults;
+    }
+    this.setCurrentMunicipality = function(value)
+    {
+        if (value!= "")
+        {
+          currentMunicipality = value;
+          //$(".barChartText").html(currentMunicipality);  
+          filterByMunicipality();
+        }
+    }
+    function filterByMunicipality()
+    {
+        municipalityData2016 = [];
+        for (var i = 0; i < filteredData.length; i++)
+        {
+            if (filteredData[i].region.indexOf(currentMunicipality) != -1)
+            {
+                municipalityData.push(filteredData[i]);
+            }   
+        }
+        blockMunicipalityData = filterByBlock(municipalityData);
+        if($('#blocks').is(":checked")) 
+        {
+           draw(blockMunicipalityData);
+        }
+        else
+        {
+            draw(municipalityData);
+        }
     }
 
 }
