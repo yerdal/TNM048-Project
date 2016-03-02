@@ -76,7 +76,6 @@ function map() {
     }
     
     function selectMunicipality(value) {
-        console.log("HEJ");
         if(value !== "") {
             municipality.style("fill", function(d){
 
