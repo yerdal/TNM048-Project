@@ -14,10 +14,8 @@ function barchart(data)
 	calcNationalResults(filteredData);
     var checkBox = document.getElementById("blocks");
   	var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 900 - margin.left - margin.right,
-
-    height = 500 - margin.top - margin.bottom;
-
+    width = (document.body.clientWidth)/2 - margin.left - margin.right,
+    height = (document.body.clientHeight)/2 - margin.top - margin.bottom;
     var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1);
 
