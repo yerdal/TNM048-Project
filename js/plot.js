@@ -300,7 +300,7 @@ function plot() {
       var vote = 0;
       for (var i = 0; i < NUM_PARTIES; i++) {
           
-          console.log(filteredData[i]);
+          //console.log(filteredData[i]);
         nationalResults.push({
           "party": filteredData[i].party,
           "region": "Sweden",
