@@ -35,11 +35,7 @@ function plot() {
     .style("z-index", "10")
     .style("visibility", "hidden");
 
-  var zoom = d3.behavior.zoom()
-    .scaleExtent([1, 8])
-    .on("zoom", move); 
-
-  var x = d3.scale.linear()
+ var x = d3.scale.linear()
     .range([0, width]).domain([2002,2014]);
 
 
