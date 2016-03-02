@@ -20,7 +20,7 @@ html, body {
     display: flex;
     flex: 1 100%;
     flex-direction: row;
-    margin-right: 10vw;
+    margin-left: 20vw;
     align-content: space-around;
 
 }
@@ -28,4 +28,14 @@ html, body {
 #barchart {
 
     margin-bottom: 22%;
+}
+
+.checkbox {
+    margin-left: 5%;
+    margin-top: 2%;
+}
+
+.dropdown {
+    margin-left: 5%;
+    margin-top: 2%;
 }
