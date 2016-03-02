@@ -41,7 +41,8 @@ function barchart(data)
     draw(nationalResults);
     var currentData = [];
     var biggestPartyCoalition;
-
+    var counter;
+    var restVotes;
 	function draw(data)
 	{
 		svg.selectAll(".bar").remove();
@@ -80,8 +81,6 @@ function barchart(data)
     function calcNationalResults()
     {
     	var NUM_PARTIES = 9;
-    	var count = 0;
-    	var vote = 0;
     	for (var i = 0; i < NUM_PARTIES; i++)
     	{
     		nationalResults.push({"party":filteredData[i].party, "region":"Sweden", "votes": 0})
@@ -89,6 +88,7 @@ function barchart(data)
 
     	for (var i = 0; i < filteredData.length; i++)
     	{
+            
     		for (var k = 0; k < NUM_PARTIES; k++)
     		{
     			if (nationalResults[k].party == filteredData[i].party)
@@ -96,13 +96,12 @@ function barchart(data)
     				nationalResults[k].votes+=parseFloat(filteredData[i].votes);
     				break;
     			}
-
+                
     		}
-    		count+=1/9;
     	}
     	for (var i = 0; i < nationalResults.length; i++)
     	{
-    		nationalResults[i].votes/=count;
+    		nationalResults[i].votes/=counter;
     		nationalResults[i].votes = (nationalResults[i].votes).toFixed(1);
     	}
     }
@@ -134,6 +133,7 @@ function barchart(data)
     }
     function filterData()
     {
+        counter = 0;
     	for (var i = 0; i < data.length; i++)
     	{
     		if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar"
@@ -141,7 +141,9 @@ function barchart(data)
     		{
     			filteredData.push(data[i]);
     		}
+            counter+=1/11;
     	}
+        counter = counter.toFixed(1);
     }
     this.setCurrentMunicipality = function(value)
     {
@@ -243,7 +245,6 @@ function barchart(data)
     }
 
    checkBox.onchange = function() {
-   		console.log(filteredData);
        	if($('#blocks').is(":checked")) 
        	{
       		if (blockMunicipalityData.length == 0)
@@ -259,7 +260,6 @@ function barchart(data)
        	{ 
        		if (municipalityData.length == 0)
        		{
-       			console.log("hej");
            		draw(nationalResults);
            	}
            	else

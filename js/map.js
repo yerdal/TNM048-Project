@@ -76,16 +76,16 @@ function map() {
     }
     
     function selectMunicipality(value) {
-        console.log("HEJ");
         if(value !== "") {
             municipality.style("fill", function(d){
 
                     if (value == d.properties.name){
                         
                         bc.setCurrentMunicipality(value);
-                        var biggestParty = bc.getBiggestCoalition();
-                        console.log(biggestParty);
-                        return biggestParty;
+                       
+                        var biggestCoalition = bc.getBiggestCoalition();
+                        
+                        return biggestCoalition;
 
                     }
                     else {
