@@ -249,9 +249,6 @@ function barchart(data)
     			biggestPartyCoalition = data[i].party;
     		}
     	}
-        console.log(largestVal);
-        console.log(biggestPartyCoalition);
-
     }
 
     function filterByBlock(data) 
