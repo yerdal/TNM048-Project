@@ -47,6 +47,7 @@ function barchart(data)
         svg.selectAll(".bar").remove();
         svg.selectAll(".axis").remove();	
         svg.selectAll("g").remove();
+        svg.selectAll("text").remove();
         x.domain(data.map(function(d) { return getPartyAbbreviation(d.party); }));
         //y.domain([0, 1]);
         y.domain([0, max ] );
