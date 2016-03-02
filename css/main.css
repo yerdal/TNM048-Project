@@ -19,9 +19,18 @@ html, body {
 
 .container {
     margin: 0;
+    margin-top: -5%;
     padding: 0;
 }
 
 .row {
     text-align: center;
+}
+
+#mapDiv {
+    width: 800px;
+}
+
+#plotChart {
+    margin-bottom: 70%;
 }
