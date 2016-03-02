@@ -16,6 +16,7 @@ function plot() {
   var yValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   var self = this;
 
+  var counter = 0;
 
   var plotDiv = $("#plotchart");
 
@@ -34,9 +35,10 @@ function plot() {
     .style("position", "absolute")
     .style("z-index", "10")
     .style("visibility", "hidden");
+
     //.style("top", (event.pageY-100)+"px").style("left",(event.pageX+200)+"px");
 
-  var x = d3.scale.linear()
+ var x = d3.scale.linear()
     .range([0, width]).domain([2002,2014]);
 
 
@@ -141,7 +143,6 @@ function plot() {
   }
 
   function drawPlot(data){
-
     // Add x axis and title.
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
@@ -179,7 +180,7 @@ function plot() {
           tooltip.html("<strong style='color:" + getPartyColor(i[0].party)+ "'>"+ i[0].party + "</strong><br><strong>" + i[0].year + ": " + "</strong>"+ i[0].votes + "%" 
             + "<br><strong>" + i[1].year + ": " + "</strong>"+ i[1].votes + "%"  
             + "<br><strong>" + i[2].year + ": " + "</strong>"+ i[2].votes + "%" 
-            + "<br><strong>" + i[3].year + ": " + "</strong>"+ i[3].votes + "%" )
+            + "<br><strong>" + i[3].year + ": " + "</strong>"+ i[3].votes + "%")
             .style("top", (d3.event.pageY) - 100 + "px")
             .style("left", (d3.event.pageX) + 100+ "px");
             //style("top", (d3.event.pageY - 28) + "px");
@@ -289,16 +290,19 @@ function plot() {
 
   function calcNationalResults(data) {
       var filteredData = [];
+      counter = 0;
       for (var i = 0; i < data.length; i++) {
-        if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar" && (data[i].region != "1229 Bara")) {
+        if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar" 
+          && (data[i].region != "1229 Bara")) {
           filteredData.push(data[i]);
-        }
-      }
 
+        }
+        counter+=1/11;
+      }
+      //console.log(counter);
       var NUM_PARTIES = 9;
       var nationalResults = [];
       var parties = [];
-      var count = 0;
       var vote = 0;
       for (var i = 0; i < NUM_PARTIES; i++) {
         nationalResults.push({
@@ -316,10 +320,9 @@ function plot() {
           }
 
         }
-        count += 1 / 9;
       }
       for (var i = 0; i < nationalResults.length; i++) {
-        nationalResults[i].votes /= count;
+        nationalResults[i].votes /= counter;
         nationalResults[i].votes = (nationalResults[i].votes).toFixed(1);
       }
       //filteredData.push(nationalResults);

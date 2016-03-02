@@ -41,47 +41,66 @@ function barchart(data)
     draw(nationalResults);
     var currentData = [];
     var biggestPartyCoalition;
-
+    var counter;
+    var restVotes;
 	function draw(data)
-	{
-		svg.selectAll(".bar").remove();
-		svg.selectAll(".axis").remove();	
-		svg.selectAll("g").remove();
-	    x.domain(data.map(function(d) { return getPartyAbbreviation(d.party); }));
-	    //y.domain([0, 1]);
-	    y.domain([0, 100 ] );
-	    svg.append("g")
-	      .attr("class", "x axis")
-	      .attr("transform", "translate(0," + height + ")")
-	      .call(xAxis);
+    {
+        max = findMaxPercent(data);
+        svg.selectAll(".bar").remove();
+        svg.selectAll(".axis").remove();	
+        svg.selectAll("g").remove();
+        x.domain(data.map(function(d) { return getPartyAbbreviation(d.party); }));
+        //y.domain([0, 1]);
+        y.domain([0, max ] );
+        svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
 
-	    svg.append("g")
-	      .attr("class", "y axis")
-	      .call(yAxis)
-	      .append("text")
-	      .attr("transform", "rotate(-90)")
-	      .attr("y", 5)
-	      .attr("dy", ".71em")
-	      .style("text-anchor", "end")
+        svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis)
+          .data(data)
+          .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 5)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+         
+        svg.selectAll(".bar")
+          .data(data)
+          .enter().append("rect")
+          .attr("class", "bar")
+          .attr("x", function(d) {  return x(d.party); })
+          .attr("width", x.rangeBand())
+          .attr("y", function(d) {  return y(d.votes); })
+          .style("fill", function(d){ return getPartyColor(d.party)})
+          .attr("height", function(d) { return height - y(d.votes); })
 
-	    svg.selectAll(".bar")
-	      .data(data)
-	      .enter().append("rect")
-	      .attr("class", "bar")
-	      .attr("x", function(d) {  return x(d.party); })
-	      .attr("width", x.rangeBand())
-	      .attr("y", function(d) {  return y(d.votes); })
-	      .style("fill", function(d){ return getPartyColor(d.party)})
-	      .attr("height", function(d) { return height - y(d.votes); });
-
+        svg.selectAll("bar")
+         .data(data)
+         .enter()
+         .append("text")
+         .text(function(d) {
+             return d.votes + "%";
+          })
+         .attr("x", function(d, i) {
+            return i * (width / data.length) + 35
+          })
+         .attr("y", function(d) {
+            return height - (d.votes * 4)              
+          })
+         .attr("font-family", "sans-serif")
+         .attr("font-size", "11px")
+         .attr("fill", "white");
+        
+           
 
     }
 
     function calcNationalResults()
     {
     	var NUM_PARTIES = 9;
-    	var count = 0;
-    	var vote = 0;
     	for (var i = 0; i < NUM_PARTIES; i++)
     	{
     		nationalResults.push({"party":filteredData[i].party, "region":"Sweden", "votes": 0})
@@ -89,6 +108,7 @@ function barchart(data)
 
     	for (var i = 0; i < filteredData.length; i++)
     	{
+            
     		for (var k = 0; k < NUM_PARTIES; k++)
     		{
     			if (nationalResults[k].party == filteredData[i].party)
@@ -96,13 +116,12 @@ function barchart(data)
     				nationalResults[k].votes+=parseFloat(filteredData[i].votes);
     				break;
     			}
-
+                
     		}
-    		count+=1/9;
     	}
     	for (var i = 0; i < nationalResults.length; i++)
     	{
-    		nationalResults[i].votes/=count;
+    		nationalResults[i].votes/=counter;
     		nationalResults[i].votes = (nationalResults[i].votes).toFixed(1);
     	}
     }
@@ -134,6 +153,7 @@ function barchart(data)
     }
     function filterData()
     {
+        counter = 0;
     	for (var i = 0; i < data.length; i++)
     	{
     		if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar"
@@ -141,7 +161,9 @@ function barchart(data)
     		{
     			filteredData.push(data[i]);
     		}
+            counter+=1/11;
     	}
+        counter = counter.toFixed(1);
     }
     this.setCurrentMunicipality = function(value)
     {
@@ -243,7 +265,6 @@ function barchart(data)
     }
 
    checkBox.onchange = function() {
-   		console.log(filteredData);
        	if($('#blocks').is(":checked")) 
        	{
       		if (blockMunicipalityData.length == 0)
@@ -259,7 +280,6 @@ function barchart(data)
        	{ 
        		if (municipalityData.length == 0)
        		{
-       			console.log("hej");
            		draw(nationalResults);
            	}
            	else
@@ -268,6 +288,18 @@ function barchart(data)
            	}
     	}
    }
-    
+    function findMaxPercent(data) {
+        max = 0;
+        count = 0;
+        data.forEach(function(d) {
+            if(max < parseFloat(d.votes)) {
+                max = parseFloat(d.votes);
+            }
+        });
+        max = max.toFixed(0);
+        max = Math.ceil(max / 10) * 10;
+        return max;
+        
+    }
 }
 
