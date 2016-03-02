@@ -83,14 +83,16 @@ function barchart(data)
              return d.votes + "%";
           })
          .attr("x", function(d, i) {
-            return i * (width / data.length) + 35
+            return i * (width / data.length) + (width / data.length - 1) / 2;      
           })
          .attr("y", function(d) {
-            return height - (d.votes * 4)              
-          })
+            return height - (d * 4) + 14;     
+          })         
          .attr("font-family", "sans-serif")
          .attr("font-size", "11px")
-         .attr("fill", "white");
+         .attr("fill", "black")
+         .attr("text-anchor", "middle")
+         
         
            
 
