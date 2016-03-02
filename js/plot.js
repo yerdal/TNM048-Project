@@ -1,4 +1,8 @@
 function plot() {
+
+
+  var municipalityData2014, municipalityData2010, municipalityData2006, municipalityData2002;
+
   var data2014 = [];
   var votes2014 = [];
   var moderat2014 = 0;
@@ -345,8 +349,20 @@ function plot() {
     }
     function filterByMunicipality()
     {
-        municipalityData2016 = [];
-        for (var i = 0; i < filteredData.length; i++)
+        /*municipalityData2014 = [];
+        municipalityData2010 = [];
+        municipalityData2006 = [];
+        municipalityData2002 = [];
+
+        var filteredData = [];
+        for (var i = 0; i < data.length; i++) {
+            if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar" 
+                && (data[i].region != "1229 Bara")) {
+                filteredData.push(data[i]);
+        }
+        }
+
+        for (var i = 0; i < data2014.length; i++)
         {
             if (filteredData[i].region.indexOf(currentMunicipality) != -1)
             {
@@ -361,7 +377,7 @@ function plot() {
         else
         {
             draw(municipalityData);
-        }
+        }*/
     }
 
 }
