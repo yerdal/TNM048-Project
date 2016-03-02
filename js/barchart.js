@@ -240,14 +240,17 @@ function barchart(data)
     {
     	var largestVal = data[0].votes;
     	biggestPartyCoalition = data[0].party;
+        console.log(data);
     	for (var i = 1; i < data.length; i++)
     	{
-    		if (data[i].votes > largestVal)
+    		if (parseFloat(data[i].votes) > largestVal)
     		{
-    			largestVal = data[i].votes;
+    			largestVal = parseFloat(data[i].votes);
     			biggestPartyCoalition = data[i].party;
     		}
     	}
+        console.log(largestVal);
+        console.log(biggestPartyCoalition);
 
     }
 
