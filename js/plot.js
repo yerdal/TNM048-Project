@@ -224,42 +224,33 @@ function plot() {
          .attr("dy", ".71em")
          .text("Election result (%)");
 
-         data.forEach(function(d) {
-           //console.log(d);
-           svg.append("path")
-               //.data(data)
-               .attr("class", "line")
-               .attr("d", line(d))
-               .attr("stroke", getPartyColor(d[0].party))
-               .on("mouseover", function(i){
-                 i = d;
-                 tooltip.style("visibility", "visible");
-                 console.log("Mouseover", i);
-                 tooltip.transition()
-                 .duration(200)
-                 .style("opacity", .9);
-                 tooltip.html(i[0].party + "<br>" + i[0].year + ": " + i[0]. votes + "%" + "<br>" + i[1].year + ": " + i[1]. votes + "%" + 
-                   "<br>" + i[2].year + ": " + i[2]. votes + "%" + "<br>" + i[3].year + ": " + i[3]. votes + "%" )
-                 .style("left", (d3.event.pageX) + "px")
-                 .style("top", (d3.event.pageY - 28) + "px");
-                 //return tooltip.text(i[0].party);
-               })
-               .on("mouseon",function(i){
-                 console.log("test", d);
-                 i = d;
-                  tooltip.transition()
-                 .duration(200)
-                 .style("opacity", .9);
-                 tooltip.html(i[0].party + "<br>" + i.votes)
-                 .style("left", (d3.event.pageX) + "px")
-                 .style("top", (d3.event.pageY - 28) + "px");
-               })
-               .on("mouseout", function(i){
-                 i = d;
-                 console.log("mouseout");
-                return tooltip.style("visibility", "hidden"); 
-               });
-         });
+       data.forEach(function(d) {
+         //console.log("test", line(d));
+         svg.append("path") 
+           .attr("class", "line")
+           .attr("d", line(d))
+           .attr("stroke", getPartyColor(d[0].party))
+           .on("mouseover", function(i){
+             i = d;
+             tooltip.style("visibility", "visible");
+             //console.log("Mouseover", i);
+             tooltip.transition()
+             .duration(200)
+             .style("opacity", .9);
+           tooltip.html("<strong style='color:" + getPartyColor(i[0].party)+ "'>"+ i[0].party + "</strong><br><strong>" + i[0].year + ": " + "</strong>"+ i[0].votes + "%" 
+             + "<br><strong>" + i[1].year + ": " + "</strong>"+ i[1].votes + "%"  
+             + "<br><strong>" + i[2].year + ": " + "</strong>"+ i[2].votes + "%" 
+             + "<br><strong>" + i[3].year + ": " + "</strong>"+ i[3].votes + "%");
+             //.style("top", (d3.event.pageY) - 100 + "px")
+             //.style("left", (d3.event.pageX) + 100+ "px");
+             //return tooltip.text(i[0].party);
+           })
+           .on("mouseout", function(i){
+             i = d;
+             //console.log("mouseout");
+             return tooltip.style("visibility", "hidden"); 
+           });
+       });
   }
 
    function getPartyColor(party)
