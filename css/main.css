@@ -24,18 +24,25 @@ html, body {
     align-content: space-around;
 
 }
+#headerText{
+    
+}
 
 #barchart {
-
     margin-bottom: 22%;
 }
 
 .checkbox {
     margin-left: 5%;
-    margin-top: 2%;
+    font-size: 24px;
 }
 
 .dropdown {
     margin-left: 5%;
     margin-top: 2%;
+}
+
+input[type='checkbox'] {
+    border-radius:5px;
+    border:2px solid #555;
 }
