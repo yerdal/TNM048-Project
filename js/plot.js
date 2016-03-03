@@ -150,6 +150,10 @@ function plot() {
 
   function drawPlot(data){
 
+    svg.selectAll(".bar").remove();
+    svg.selectAll(".axis").remove();    
+    svg.selectAll("g").remove();
+    svg.selectAll("path").remove();
     // Add x axis and title.
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
@@ -198,59 +202,6 @@ function plot() {
             return tooltip.style("visibility", "hidden"); 
           });
       });
-  }
-    function drawMunicipalityPlot(data){
-        svg.selectAll(".bar").remove();
-        svg.selectAll(".axis").remove();    
-        svg.selectAll("g").remove();
-        svg.selectAll("path").remove();
-        svg.append("g")
-         .attr("transform", "translate(0," + height + ")")
-         .call(xAxis)
-         .append("text")
-         .attr("class", "label")
-         .attr("x", width - 50)
-         .attr("y", -6)
-         .text("Election Year");
-
-       svg.append("g")
-         .attr("class", "y axis")
-         .call(yAxis)
-         .append("text")
-         .attr("class", "label")
-         .attr("transform", "rotate(-90)")
-         .attr("y", 8)
-         .attr("x", -100)
-         .attr("dy", ".71em")
-         .text("Election result (%)");
-
-       data.forEach(function(d) {
-         //console.log("test", line(d));
-         svg.append("path") 
-           .attr("class", "line")
-           .attr("d", line(d))
-           .attr("stroke", getPartyColor(d[0].party))
-           .on("mouseover", function(i){
-             i = d;
-             tooltip.style("visibility", "visible");
-             //console.log("Mouseover", i);
-             tooltip.transition()
-             .duration(200)
-             .style("opacity", .9);
-           tooltip.html("<strong style='color:" + getPartyColor(i[0].party)+ "'>"+ i[0].party + "</strong><br><strong>" + i[0].year + ": " + "</strong>"+ i[0].votes + "%" 
-             + "<br><strong>" + i[1].year + ": " + "</strong>"+ i[1].votes + "%"  
-             + "<br><strong>" + i[2].year + ": " + "</strong>"+ i[2].votes + "%" 
-             + "<br><strong>" + i[3].year + ": " + "</strong>"+ i[3].votes + "%");
-             //.style("top", (d3.event.pageY) - 100 + "px")
-             //.style("left", (d3.event.pageX) + 100+ "px");
-             //return tooltip.text(i[0].party);
-           })
-           .on("mouseout", function(i){
-             i = d;
-             //console.log("mouseout");
-             return tooltip.style("visibility", "hidden"); 
-           });
-       });
   }
 
    function getPartyColor(party)
@@ -514,7 +465,7 @@ function plot() {
                 }
             }
         }
-        drawMunicipalityPlot(totLocalData);
+        drawPlot(totLocalData);
     }
 
 }
