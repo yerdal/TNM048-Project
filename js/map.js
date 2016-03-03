@@ -22,10 +22,10 @@ function map() {
         height = mapDiv.height() - margin.top - margin.bottom;
    
     var projection = d3.geo.albers()
-	    .center([5, 70])
+	    .center([4, 70])
 	    .rotate([-10, 0])
 	    .parallels([30, 60])
-	    .scale(700 * 4)
+	    .scale(700 * 3.5)
 	    .translate([width / 2, 0]);
           
     var svg = d3.select("#map").append("svg")
