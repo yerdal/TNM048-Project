@@ -25,7 +25,7 @@ function map() {
 	    .center([5, 70])
 	    .rotate([-10, 0])
 	    .parallels([30, 60])
-	    .scale(700 * 5)
+	    .scale(700 * 4)
 	    .translate([width / 2, 0]);
           
     var svg = d3.select("#map").append("svg")
