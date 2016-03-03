@@ -84,15 +84,15 @@ function barchart(data)
              return d.votes + "%";
           })
          .attr("x", function(d, i) {
-            return i * (width / data.length) + (width / data.length - 1) / 2;      
+            return i * (width / data.length) + (width / data.length - 25) / 2;      
           })
          .attr("y", function(d) {
-            return height - (d * 4) + 14;     
+             console.log( height)
+            return y(d.votes)+15;     
           })         
          .attr("font-family", "sans-serif")
          .attr("font-size", "11px")
-         .attr("fill", "black")
-         .attr("text-anchor", "middle")
+         .attr("fill", "white")
          
         
            
