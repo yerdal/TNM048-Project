@@ -5,7 +5,7 @@ Project in the course Information visualization.
  - [x] Map for sweden municipalities
  - [x] Bar chart
  - [x] Load data, start with 2014
- - [] Load data for several years
- - [] Different coloring
+ - [x] Load data for several years
+ - [x] Different coloring
  - [x] Search field
 
