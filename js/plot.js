@@ -2,11 +2,11 @@ function plot() {
 
 
   var municipalityData2014, municipalityData2010, municipalityData2006, municipalityData2002;
-
+  var currentMunicipality;
   var data2014 = [];
   var votes2014 = [];
   var moderat2014 = 0;
-
+  var totLocalData = [];
   var data2010 = [];
   var votes2010 = [];
 
@@ -105,6 +105,10 @@ function plot() {
     //define the domain of the scatter plot axes
     filterData();
   });
+
+  var localModeratVotes, localCenterVotes, localFolkVotes, localKristVotes, 
+  localMilVotes, localSocVotes, localSDVotes, localOvrigVotes, localVansterVotes;
+
   var moderatVotes, centerVotes, folkVotes, kristVotes, milVotes, socVotes, sdVotes, ovrigVotes;
 
 
@@ -168,8 +172,9 @@ function plot() {
       .text("Election result (%)");
 
       data.forEach(function(d) {
-        //console.log("test", line(d));
+        console.log(d);
         svg.append("path")
+            //.data(data)
             .attr("class", "line")
             .attr("d", line(d))
             .attr("stroke", getPartyColor(d[0].party))
@@ -202,20 +207,68 @@ function plot() {
              return tooltip.style("visibility", "hidden"); 
             });
       });
-      /*svg.append("svg:path")
-      .data(data)
-      .enter()
-      .append("g")
-      .attr("class", "line")
-      .attr("d", function(d){
-        console.log("tet", d);
-        return line(d);
-      })
-      .attr("stroke", function(d){
-        console.log("color", getPartyColor(d[0].party));
-        return getPartyColor(d[0].party);
-      });*/
+  }
+    function drawMunicipalityPlot(data){
+        svg.selectAll(".bar").remove();
+        svg.selectAll(".axis").remove();    
+        svg.selectAll("g").remove();
+        svg.selectAll("path").remove();
+   svg.append("g")
+         .attr("transform", "translate(0," + height + ")")
+         .call(xAxis)
+         .append("text")
+         .attr("class", "label")
+         .attr("x", width - 50)
+         .attr("y", -6)
+         .text("Election Year");
 
+       svg.append("g")
+         .attr("class", "y axis")
+         .call(yAxis)
+         .append("text")
+         .attr("class", "label")
+         .attr("transform", "rotate(-90)")
+         .attr("y", 8)
+         .attr("x", -100)
+         .attr("dy", ".71em")
+         .text("Election result (%)");
+
+         data.forEach(function(d) {
+           //console.log(d);
+           svg.append("path")
+               //.data(data)
+               .attr("class", "line")
+               .attr("d", line(d))
+               .attr("stroke", getPartyColor(d[0].party))
+               .on("mouseover", function(i){
+                 i = d;
+                 tooltip.style("visibility", "visible");
+                 console.log("Mouseover", i);
+                 tooltip.transition()
+                 .duration(200)
+                 .style("opacity", .9);
+                 tooltip.html(i[0].party + "<br>" + i[0].year + ": " + i[0]. votes + "%" + "<br>" + i[1].year + ": " + i[1]. votes + "%" + 
+                   "<br>" + i[2].year + ": " + i[2]. votes + "%" + "<br>" + i[3].year + ": " + i[3]. votes + "%" )
+                 .style("left", (d3.event.pageX) + "px")
+                 .style("top", (d3.event.pageY - 28) + "px");
+                 //return tooltip.text(i[0].party);
+               })
+               .on("mouseon",function(i){
+                 console.log("test", d);
+                 i = d;
+                  tooltip.transition()
+                 .duration(200)
+                 .style("opacity", .9);
+                 tooltip.html(i[0].party + "<br>" + i.votes)
+                 .style("left", (d3.event.pageX) + "px")
+                 .style("top", (d3.event.pageY - 28) + "px");
+               })
+               .on("mouseout", function(i){
+                 i = d;
+                 console.log("mouseout");
+                return tooltip.style("visibility", "hidden"); 
+               });
+         });
   }
 
    function getPartyColor(party)
@@ -349,35 +402,138 @@ function plot() {
     }
     function filterByMunicipality()
     {
-        /*municipalityData2014 = [];
+        municipalityData2014 = [];
         municipalityData2010 = [];
         municipalityData2006 = [];
         municipalityData2002 = [];
 
-        var filteredData = [];
-        for (var i = 0; i < data.length; i++) {
-            if (data[i]["party"] != "ej röstande" && data[i]["party"] != "ogiltiga valsedlar" 
-                && (data[i].region != "1229 Bara")) {
-                filteredData.push(data[i]);
-        }
-        }
+        var filteredData2014 = [];
+        var filteredData2010 = [];
+        var filteredData2006 = [];
+        var filteredData2002 = [];
 
-        for (var i = 0; i < data2014.length; i++)
+        for (var i = 0; i < data2014.length; i++) 
         {
-            if (filteredData[i].region.indexOf(currentMunicipality) != -1)
+            if (data2014[i]["party"] != "ej röstande" && data2014[i]["party"] != "ogiltiga valsedlar" 
+                && (data2014[i].region != "1229 Bara")) 
             {
-                municipalityData.push(filteredData[i]);
+                filteredData2014.push(data2014[i]);
+            }
+            if (data2010[i]["party"] != "ej röstande" && data2010[i]["party"] != "ogiltiga valsedlar" 
+                && (data2010[i].region != "1229 Bara")) 
+            {
+                filteredData2010.push(data2010[i]);
+            }
+            if (data2006[i]["party"] != "ej röstande" && data2006[i]["party"] != "ogiltiga valsedlar" 
+                && (data2006[i].region != "1229 Bara")) 
+            {
+                filteredData2006.push(data2006[i]);
+            }
+            if (data2002[i]["party"] != "ej röstande" && data2002[i]["party"] != "ogiltiga valsedlar" 
+                && (data2002[i].region != "1229 Bara")) 
+            {
+                filteredData2002.push(data2002[i]);
+            }
+        }
+        
+        localModeratVotes = []; 
+        localCenterVotes = []; 
+        localFolkVotes = []; 
+        localKristVotes = [];
+        localMilVotes = [];
+        localSocVotes = []; 
+        localSDVotes = []; 
+        localOvrigVotes = [];
+        localVansterVotes = [];
+        localModeratVotes.push({"party":"Moderaterna", "region":"", "votes": 0});
+        localCenterVotes.push({"party":"Centerpartiet", "region":"", "votes": 0 });
+        localFolkVotes.push({"party":"Folkpartiet", "region":"", "votes": 0});
+        localKristVotes.push({"party":"Kristdemokraterna", "region":"", "votes":0});
+        localMilVotes.push({"party":"Miljöpartiet", "region":"", "votes":0});
+        localSocVotes.push({"party":"Socialdemokraterna", "region":"", "votes":0});
+        localSDVotes.push({"party":"Sverigedemokraterna", "region":"", "votes":0});
+        localOvrigVotes.push({"party":"övriga partier", "region":"", "votes":0});
+        localVansterVotes.push({"party":"Vänsterpartiet", "region":"", "votes":0});
+
+        for (var i = 0; i < filteredData2014.length; i++)
+        {
+            if (filteredData2014[i].region.indexOf(currentMunicipality) != -1)
+            {
+                municipalityData2014.push(filteredData2014[i]);
+            } 
+            if (filteredData2010[i].region.indexOf(currentMunicipality) != -1)
+            {
+                municipalityData2010.push(filteredData2010[i]);
+            }
+            if (filteredData2006[i].region.indexOf(currentMunicipality) != -1)
+            {
+                municipalityData2006.push(filteredData2006[i]);
+            }
+            if (filteredData2002[i].region.indexOf(currentMunicipality) != -1)
+            {
+                municipalityData2002.push(filteredData2002[i]);
             }   
         }
-        blockMunicipalityData = filterByBlock(municipalityData);
-        if($('#blocks').is(":checked")) 
+        totLocalData = [];
+        totLocalData.push(localModeratVotes);
+        totLocalData.push(localCenterVotes);
+        totLocalData.push(localFolkVotes);
+        totLocalData.push(localKristVotes);
+        totLocalData.push(localMilVotes);
+        totLocalData.push(localSocVotes);
+        totLocalData.push(localVansterVotes);
+        totLocalData.push(localSDVotes);
+        totLocalData.push(localOvrigVotes);
+        
+        for (var i = 0; i < municipalityData2014.length; i++)
         {
-           draw(blockMunicipalityData);
+            for (var j = 0; j < 9; j++)
+            {
+                if (municipalityData2014[i].party == totLocalData[j][0].party)
+                {
+                    //totData[j].push(municipalityData2014[i]);
+                    totLocalData[j][0].region = municipalityData2014[i].region;
+                    totLocalData[j][0].votes = municipalityData2014[j].votes;
+              
+                }
+                if (municipalityData2010[i].party == totLocalData[j][0].party)
+                {
+                    totLocalData[j].push(municipalityData2010[i]);
+
+                }
+                if (municipalityData2006[i].party == totLocalData[j][0].party)
+                {
+                    totLocalData[j].push(municipalityData2006[i]);
+                }
+                if (municipalityData2002[i].party == totLocalData[j][0].party)
+                {
+                    totLocalData[j].push(municipalityData2002[i]);
+                }
+            }
         }
-        else
+        for (var i = 0; i < totLocalData.length; i++)
         {
-            draw(municipalityData);
-        }*/
+            for (var j = 0; j < totLocalData[0].length; j++)
+            {
+                if (j == 0)
+                {
+                    totLocalData[i][j].year = 2014;
+                }
+                else if (j == 1)
+                {
+                    totLocalData[i][j].year = 2010;
+                }
+                else if (j == 2)
+                {
+                    totLocalData[i][j].year = 2006;
+                }
+                else if (j==3)
+                {
+                    totLocalData[i][j].year = 2002;
+                }
+            }
+        }
+        drawMunicipalityPlot(totLocalData);
     }
 
 }

@@ -238,7 +238,6 @@ function barchart(data)
     {
     	var largestVal = data[0].votes;
     	biggestPartyCoalition = data[0].party;
-        console.log(data);
     	for (var i = 1; i < data.length; i++)
     	{
     		if (parseFloat(data[i].votes) > largestVal)
