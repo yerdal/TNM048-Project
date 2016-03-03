@@ -1,6 +1,5 @@
 function plot() {
 
-
   var municipalityData2014, municipalityData2010, municipalityData2006, municipalityData2002;
   var currentMunicipality;
   var data2014 = [];
@@ -9,10 +8,10 @@ function plot() {
   var totLocalData = [];
   var data2010 = [];
   var votes2010 = [];
-
+  var blockMunicipalityData = [];
   var data2006 = [];
   var votes2006 = [];
-
+  var totData = [];
   var data2002 = [];
   var votes2002 = [];
 
@@ -132,7 +131,7 @@ function plot() {
     sdVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "Sverigedemokraterna");
     ovrigVotes = forEachParty(votes2014, votes2010, votes2006, votes2002, "övriga partier");
 
-    var totData = [];
+    totData = [];
 
     totData.push(moderatVotes);
     totData.push(centerVotes);
@@ -206,9 +205,9 @@ function plot() {
 
    function getPartyColor(party)
     {
-      if (party == "Moderaterna" || party == "Blue")
+      if (party == "Moderaterna" || party == "blue")
         return "#3333ff"
-      else if (party == "Socialdemokraterna" || party == "Red")
+      else if (party == "Socialdemokraterna" || party == "red")
         return "#ff3300";
       else if (party == "Miljöpartiet")
         return "#33cc33"
@@ -465,7 +464,139 @@ function plot() {
                 }
             }
         }
-        drawPlot(totLocalData);
+        blockMunicipalityData = [];
+        blockMunicipalityData = filterByBlock(totLocalData);
+        
+        if($('#blocks').is(":checked")) 
+        {
+            drawPlot(blockMunicipalityData);
+        }
+        else
+        {
+            drawPlot(totLocalData);
+        }
+        
     }
+    function filterByBlock(d)
+    {
+        var blue = [];
+        var red = [];
+        var rest = [];
+        var totalVotes2014 = [];
+        var totalVotes2010 = [];
+        var totalVotes2006 = [];
+        var totalVotes2002 = [];
+        totalVotes2014.push({"blue":0, "red":0, "rest":0});
+        totalVotes2010.push({"blue":0, "red":0, "rest":0});
+        totalVotes2006.push({"blue":0, "red":0, "rest":0});
+        totalVotes2002.push({"blue":0, "red":0, "rest":0});
+        blue.push({"party": "Blue", "region":"", "votes":0});
+        red.push({"party": "Red", "region":"", "votes":0});
+        rest.push({"party":"övriga partier", "region":"", "votes":0});
 
+        for (var i = 0; i < d.length; i++)
+        {
+            if (d[i][0].party == "Moderaterna" || 
+              d[i][0].party == "Centerpartiet" ||
+              d[i][0].party == "Kristdemokraterna" ||
+              d[i][0].party == "Folkpartiet")
+            {
+                totalVotes2014[0].blue+=parseFloat(d[i][0].votes);
+                totalVotes2010[0].blue+=parseFloat(d[i][1].votes);
+                totalVotes2006[0].blue+=parseFloat(d[i][2].votes);
+                totalVotes2002[0].blue+=parseFloat(d[i][3].votes);
+            }
+            else if (d[i][0].party == "Socialdemokraterna" ||
+              d[i][0].party == "Miljöpartiet" ||
+              d[i][0].party == "Vänsterpartiet")
+            {
+                totalVotes2014[0].red+=parseFloat(d[i][0].votes);
+                totalVotes2010[0].red+=parseFloat(d[i][1].votes);
+                totalVotes2006[0].red+=parseFloat(d[i][2].votes);
+                totalVotes2002[0].red+=parseFloat(d[i][3].votes);
+            }
+            else if (d[i][0].party == "Sverigedemokraterna" ||
+              d[i][0].party == "övriga partier")
+            {
+                totalVotes2014[0].rest+=parseFloat(d[i][0].votes);
+                totalVotes2010[0].rest+=parseFloat(d[i][1].votes);
+                totalVotes2006[0].rest+=parseFloat(d[i][2].votes);
+                totalVotes2002[0].rest+=parseFloat(d[i][3].votes);
+            }
+        }
+
+        totalVotes2014[0].blue = totalVotes2014[0].blue.toFixed(1);
+        totalVotes2010[0].blue = totalVotes2010[0].blue.toFixed(1);
+        totalVotes2006[0].blue = totalVotes2006[0].blue.toFixed(1);
+        totalVotes2002[0].blue = totalVotes2002[0].blue.toFixed(1);
+        totalVotes2014[0].red = totalVotes2014[0].red.toFixed(1);
+        totalVotes2010[0].red = totalVotes2010[0].red.toFixed(1);
+        totalVotes2006[0].red = totalVotes2006[0].red.toFixed(1);
+        totalVotes2002[0].red = totalVotes2002[0].red.toFixed(1);
+        totalVotes2014[0].rest = totalVotes2014[0].rest.toFixed(1);
+        totalVotes2010[0].rest = totalVotes2010[0].rest.toFixed(1);
+        totalVotes2006[0].rest = totalVotes2006[0].rest.toFixed(1);
+        totalVotes2002[0].rest = totalVotes2002[0].rest.toFixed(1);
+        var total = [];
+        total.push([]);
+        total.push([]);
+        total.push([]);
+        /*/total[0].push({"party":"blue", "region":"", "year":0, "votes":0});
+        total[0].push({"party":"red", "region":"", "year":0, "votes":0});
+        total[0].push({"party":"övriga partier", "region":0, "votes":0})*/
+      
+        
+        total[0].push({"party":"blue", "region":currentMunicipality,
+             "votes":totalVotes2014[0].blue, "year":2014});
+        total[0].push({"party":"blue", "region":currentMunicipality,
+             "votes":totalVotes2010[0].blue, "year":2010});
+        total[0].push({"party":"blue", "region":currentMunicipality,
+             "votes":totalVotes2006[0].blue, "year":2006});
+        total[0].push({"party":"blue", "region":currentMunicipality,
+             "votes":totalVotes2002[0].blue, "year":2002});
+        total[1].push({"party":"red", "region":currentMunicipality,
+             "votes":totalVotes2014[0].red, "year":2014});
+        total[1].push({"party":"red", "region":currentMunicipality,
+             "votes":totalVotes2010[0].red, "year":2010});
+        total[1].push({"party":"red", "region":currentMunicipality,
+             "votes":totalVotes2006[0].red, "year":2006});
+        total[1].push({"party":"red", "region":currentMunicipality,
+             "votes":totalVotes2002[0].red, "year":2002});
+        total[2].push({"party":"övriga partier", "region":currentMunicipality,
+             "votes":totalVotes2014[0].rest, "year":2014});
+        total[2].push({"party":"övriga partier", "region":currentMunicipality,
+             "votes":totalVotes2010[0].rest, "year":2010});
+        total[2].push({"party":"övriga partier", "region":currentMunicipality,
+             "votes":totalVotes2006[0].rest, "year":2006});
+        total[2].push({"party":"övriga partier", "region":currentMunicipality,
+             "votes":totalVotes2002[0].rest, "year":2002});
+        //drawPlot(total);
+
+        return total;
+    }
+    this.draw = function(checkBoxStatus)
+    {
+        if(checkBoxStatus)
+        {
+            if (blockMunicipalityData.length == 0)
+            {            
+                drawPlot(filterByBlock(totData));
+            }
+            else
+            {
+                drawPlot(blockMunicipalityData);
+            }
+        }
+        else
+        {
+          if (totLocalData == 0)
+          {
+              drawPlot(totData);
+          }
+          else
+          {
+              drawPlot(totLocalData);
+          }
+        }
+    }
 }
