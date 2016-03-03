@@ -47,6 +47,7 @@ function barchart(data)
         svg.selectAll(".bar").remove();
         svg.selectAll(".axis").remove();	
         svg.selectAll("g").remove();
+        svg.selectAll("text").remove();
         x.domain(data.map(function(d) { return getPartyAbbreviation(d.party); }));
         //y.domain([0, 1]);
         y.domain([0, max ] );
@@ -83,14 +84,16 @@ function barchart(data)
              return d.votes + "%";
           })
          .attr("x", function(d, i) {
-            return i * (width / data.length) + 35
+            return i * (width / data.length) + (width / data.length - 25) / 2;      
           })
          .attr("y", function(d) {
-            return height - (d.votes * 4)              
-          })
+             console.log( height)
+            return y(d.votes)+15;     
+          })         
          .attr("font-family", "sans-serif")
          .attr("font-size", "11px")
-         .attr("fill", "white");
+         .attr("fill", "white")
+         
         
            
 

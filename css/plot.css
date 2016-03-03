@@ -42,3 +42,9 @@ text {
   position: absolute;
   text-align: center;
 }
+
+#tooltipText {
+    float: right;
+    margin-top: -40%;
+    margin-right: 10%;
+}
