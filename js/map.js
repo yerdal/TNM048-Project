@@ -76,8 +76,14 @@ function map() {
     }
     
     function selectMunicipality(value) {
-        if(value !== "") {
-            municipality.style("fill", function(d){
+        
+            if (!municipality)
+            {
+                console.log("hej");
+            }
+            else
+            {
+                municipality.style("fill", function(d){
 
                     if (value == d.properties.name){
                         
@@ -94,6 +100,7 @@ function map() {
             })
         }
     };
+    
 
      //zoom and panning method, this is code from the labs.
     function move() {
