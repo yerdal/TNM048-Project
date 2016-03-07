@@ -4,6 +4,7 @@ function barchart(data)
 	var blockMunicipalityData = [];
 	var barchartDiv = $("#barchart");
 	var results;
+    var checkBoxStatus = false;
 	var str = "..";
 	var colormap = d3.scale.category20();
 	var currentMunicipality = "Sweden"; // national data by default
@@ -18,7 +19,7 @@ function barchart(data)
     height = (document.body.clientHeight)/2 - margin.top - margin.bottom;
     var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1);
-
+    
     var y = d3.scale.linear()
     .range([height, 0]);
     // 
@@ -87,7 +88,6 @@ function barchart(data)
             return i * (width / data.length) + (width / data.length - 25) / 2;      
           })
          .attr("y", function(d) {
-             console.log( height)
             return y(d.votes)+15;     
           })         
          .attr("font-family", "sans-serif")
@@ -267,9 +267,12 @@ function barchart(data)
    checkBox.onchange = function() {
        	if($('#blocks').is(":checked")) 
        	{
+            checkBoxStatus = true;
       		if (blockMunicipalityData.length == 0)
-      		{
+      		{   
+                
       			draw(filterByBlock(nationalResults));
+               
       		}
       		else
       		{
@@ -278,6 +281,7 @@ function barchart(data)
        	}
        else 
        	{ 
+            checkBoxStatus = false;
        		if (municipalityData.length == 0)
        		{
            		draw(nationalResults);
@@ -287,6 +291,7 @@ function barchart(data)
            		draw (municipalityData);
            	}
     	}
+        plot1.draw(checkBoxStatus)
    }
     function findMaxPercent(data) {
         max = 0;
