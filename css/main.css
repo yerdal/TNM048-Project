@@ -28,6 +28,7 @@ html, body {
     
 }
 
+
 #barchart {
     margin-bottom: 22%;
 }
@@ -46,3 +47,9 @@ input[type='checkbox'] {
     border-radius:5px;
     border:2px solid #555;
 }
+
+#map {
+ border-left: 1px solid grey;
+}
+
+
