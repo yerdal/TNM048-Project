@@ -52,4 +52,8 @@ input[type='checkbox'] {
  border-left: 1px solid grey;
 }
 
+.country {
+    stroke: white;
+}
+
 
